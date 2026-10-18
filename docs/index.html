@@ -1,0 +1,836 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>PixelSync for Mac</title>
+<meta name="description" content="PixelSync is a Mac app for photographers, designers and creators who keep everything: browse your whole library, develop RAW files with film-style looks, and always know which photos are safely backed up.">
+<meta property="og:title" content="PixelSync for Mac">
+<meta property="og:description" content="PixelSync is a Mac app for photographers, designers and creators who keep everything: browse your whole library, develop RAW files with film-style looks, and always know which photos are safely backed up.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#fbfaf6">
+<link rel="icon" href="icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;600;800&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
+<style>
+/* Layout concept: white paper and film-box colour around dark, faithful drawings of the real app.
+   Big plain-spoken headlines, flat colour blocks from the Look Badges, mono print like a film box.
+   Pain first, then the whole workflow as film frames, then one drawn product view per promise. */
+:root{
+  --paper:#fbfaf6; --paper2:#f3f1ea; --white:#ffffff; --ink:#141414; --mute:#625d54; --line:#e4e0d6;
+  --marigold:#f5b81c; --tomato:#e8453c; --ultra:#2c4fd6; --pink:#f0679f; --teal:#12a39a; --plum:#3b1f38; --orange:#f47a20;
+  --display:"Bricolage Grotesque","Noto Sans TC",system-ui,sans-serif;
+  --body:"Instrument Sans","Noto Sans TC",system-ui,-apple-system,sans-serif;
+  --mono:"DM Mono",ui-monospace,Menlo,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--ultra);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+.wrap>*,.split>*{min-width:0}
+section{padding-block:clamp(64px,9vw,120px)}
+h1,h2,h3{margin:0;font-family:var(--display);text-wrap:balance}
+h1{font-weight:800;font-size:clamp(44px,6.2vw,80px);line-height:.95;letter-spacing:-.035em}
+h2{font-weight:800;font-size:clamp(34px,4.6vw,60px);line-height:1;letter-spacing:-.03em;max-width:18ch}
+h3{font-weight:600;font-size:20px;line-height:1.2;letter-spacing:-.01em}
+p{margin:0}
+:root[lang="zh-Hant"] h1,:root[lang="zh-Hant"] h2{font-weight:900;letter-spacing:-.01em;line-height:1.12}
+.lead{font-size:clamp(18px,1.8vw,21px);color:var(--mute);max-width:52ch}
+.tag{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);display:flex;gap:10px;align-items:center}
+.tag::before{content:"";width:22px;height:8px;background:var(--c,var(--ink));border-radius:2px}
+
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:color-mix(in srgb,var(--paper) 90%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:22px;height:60px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:-.02em;text-decoration:none}
+.links{display:flex;gap:24px;margin-left:auto;font-size:15px}
+.links a{text-decoration:none;color:var(--mute)}.links a:hover{color:var(--ink)}
+.lang{display:flex;border:1.5px solid var(--ink);border-radius:999px;overflow:hidden}
+.lang button{background:none;border:0;font:600 12.5px var(--body);padding:5px 11px;cursor:pointer;color:var(--ink)}
+.lang button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;font:600 16px var(--body);padding:14px 24px;text-decoration:none;border:2px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer;transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.sm{padding:8px 16px;font-size:14px}
+@media (max-width:860px){.links{display:none}.nav .lang{margin-left:auto}}
+
+/* hero */
+.hero{padding-top:clamp(36px,5vw,72px);overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(32px,5vw,64px);align-items:center}
+@media (max-width:980px){.hero .wrap{grid-template-columns:1fr}}
+.hero-copy{display:flex;flex-direction:column;gap:26px}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap}
+.small{font-size:14px;color:var(--mute);display:flex;flex-wrap:wrap;gap:4px 18px}
+.small span::before{content:"✓ ";color:var(--teal);font-weight:700}
+.stage{position:relative;padding:0 0 26px 26px}
+.stage .block{position:absolute;inset:34px 0 0 52px;background:var(--marigold);border-radius:12px}
+.sticker{position:absolute;left:-4px;top:2px;z-index:3;background:var(--ultra);color:#fff;border-radius:6px;padding:10px 14px;transform:rotate(-4deg);box-shadow:0 10px 24px -10px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:2px}
+.sticker b{font:800 30px/1 var(--display);letter-spacing:-.03em}
+.sticker span{font:500 10px var(--mono);letter-spacing:.14em;text-transform:uppercase}
+
+/* perforated film edge */
+.film{height:30px;background:var(--ink);position:relative;overflow:hidden;display:flex;align-items:center}
+.film::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 9px 15px,var(--paper) 4.5px,transparent 5px) 0 0/22px 30px}
+.film span{position:relative;z-index:1;margin:0 auto;background:var(--ink);color:var(--marigold);padding:2px 14px;font:500 11px var(--mono);letter-spacing:.2em;text-transform:uppercase}
+
+/* sections */
+.sec-head{display:flex;flex-direction:column;gap:18px;margin-bottom:44px}
+.pains{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media (max-width:1020px){.pains{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.pains{grid-template-columns:1fr}}
+.box{display:flex;flex-direction:column;background:var(--c1);color:var(--fg);border-radius:8px;overflow:hidden;box-shadow:0 14px 28px -16px rgba(20,20,20,.5);text-align:left;font:inherit;border:0;padding:0}
+.box .hd,.box .ft{display:flex;justify-content:space-between;gap:8px;font:500 10px var(--mono);letter-spacing:.16em;text-transform:uppercase;padding:9px 14px}
+.box .hd{border-bottom:2px solid currentColor}
+.box .ft{border-top:2px solid currentColor}
+.box i{font-style:normal}
+.box .nm{font:800 clamp(22px,2.2vw,28px)/1.05 var(--display);letter-spacing:-.025em;padding:20px 14px;flex:1;display:block}
+.pains .box{min-height:300px}
+.story{margin-top:44px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:24px 48px;align-items:start}
+@media (max-width:820px){.story{grid-template-columns:1fr}}
+.story p{font-size:clamp(18px,1.8vw,22px);line-height:1.5;max-width:48ch}
+.band{background:var(--paper2);border-block:1.5px solid var(--ink)}
+
+/* workflow film strip */
+.strip{background:var(--ink);border-radius:6px;padding:26px 0;position:relative}
+.strip::before,.strip::after{content:"";position:absolute;left:0;right:0;height:14px;background:radial-gradient(circle at 9px 7px,var(--paper) 3.5px,transparent 4px) 0 0/22px 14px}
+.strip::before{top:6px}.strip::after{bottom:6px}
+.strip-in{display:grid;grid-template-columns:repeat(5,1fr)}
+@media (max-width:1020px){.strip-in{grid-template-columns:repeat(2,1fr);gap:12px;padding:0 12px}}
+@media (max-width:560px){.strip-in{grid-template-columns:1fr}}
+.frame{margin:0 6px;background:var(--c1);color:var(--fg);border-radius:4px;padding:18px 16px;display:flex;flex-direction:column;gap:12px;min-height:290px}
+@media (max-width:1020px){.frame{margin:0}}
+.frame .no{font:500 11px var(--mono);letter-spacing:.16em;display:flex;justify-content:space-between}
+.frame h3{font:800 26px/1 var(--display);letter-spacing:-.025em}
+.frame p{font-size:15px;line-height:1.45;flex:1}
+.st{align-self:flex-start;font:500 10.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:var(--ink);color:#fff}
+.st.soon{background:transparent;border:1.5px dashed currentColor;color:inherit}
+.strip-note{margin-top:18px;font-size:14px;color:var(--mute)}
+
+/* split layout */
+.split{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(32px,5vw,72px);align-items:center}
+.split.rev{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}
+.split.rev .txt{order:2}
+@media (max-width:920px){.split,.split.rev{grid-template-columns:1fr}.split.rev .txt{order:0}}
+.txt{display:flex;flex-direction:column;gap:22px}
+.ticks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.ticks li{display:grid;grid-template-columns:22px 1fr;gap:12px;font-size:16.5px}
+.ticks li::before{content:"";width:22px;height:22px;border-radius:50%;background:var(--c,var(--teal)) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.8 6.4 5 8.6 9.3 3.6'/%3E%3C/svg%3E") center/12px no-repeat}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips span{font-size:14px;border:1.5px solid var(--ink);border-radius:999px;padding:4px 14px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:18px}
+.stats b{display:block;font:800 clamp(30px,3.4vw,44px)/1 var(--display);letter-spacing:-.03em}
+.stats span{font-size:14px;color:var(--mute)}
+.dev-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px 64px;align-items:end;margin-bottom:36px}
+@media (max-width:860px){.dev-head{grid-template-columns:1fr}}
+.dev-head .txt{gap:18px}
+.caption{margin-top:16px;font-size:14px;color:var(--mute);max-width:80ch}
+
+/* ====== drawn app views: a fixed-size design scaled to fit ====== */
+.mock{position:relative;width:100%;border-radius:14px;overflow:hidden;border:1.5px solid var(--ink);background:#1c1c1e;box-shadow:8px 8px 0 rgba(20,20,20,.14)}
+.app{position:absolute;left:0;top:0;transform-origin:0 0;background:#1c1c1e;color:#e6e6e9;font:13px/1.35 -apple-system,"SF Pro Text","Instrument Sans","Noto Sans TC",system-ui,sans-serif;display:flex;flex-direction:column;text-align:left;font-variant-numeric:tabular-nums;user-select:none}
+.app *{box-sizing:border-box}
+.app .tbar{height:48px;flex:none;display:flex;align-items:center;gap:10px;padding:0 14px;position:relative}
+.tl{display:flex;gap:8px;margin-right:6px}.tl i{width:12px;height:12px;border-radius:50%}
+.tl i:nth-child(1){background:#ff5f57}.tl i:nth-child(2){background:#febc2e}.tl i:nth-child(3){background:#28c840}
+.ib{width:30px;height:30px;border-radius:50%;background:#2c2c2e;display:grid;place-items:center;color:#c9c9cd;font-size:14px}
+.ibr{width:28px;height:26px;border-radius:7px;display:grid;place-items:center;color:#9a9aa0;font-size:13px}
+.ttl{display:flex;flex-direction:column;line-height:1.15;margin-left:4px;min-width:0}
+.ttl b{font-size:13px;font-weight:600}.ttl small{font-size:10px;color:#8e8e93;letter-spacing:.02em}
+.seg{position:absolute;left:50%;top:9px;transform:translateX(-50%);display:flex;background:#2c2c2e;border-radius:10px;padding:3px;gap:2px}
+.seg span{padding:4px 15px;border-radius:7px;color:#a0a0a6;font-size:12px}.seg span.on{background:#555559;color:#fff}
+.seg .ico{padding:4px 9px}
+.tbar .sp{flex:1}
+.app .body{flex:1;display:flex;min-height:0}
+.side{width:196px;flex:none;margin:0 0 8px 8px;background:#242426;border-radius:10px;padding:10px 8px;display:flex;flex-direction:column;gap:2px;overflow:hidden}
+.devc{background:#2b2b2d;border-radius:10px;padding:9px 11px;margin-bottom:12px}
+.devc small{display:block;font-size:8.5px;color:#a8a8ad;letter-spacing:.06em;text-transform:uppercase}
+.devc small::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#30d158;margin-right:6px;vertical-align:1px}
+.devc b{display:block;font-size:14px;margin-top:3px}.devc span{font-size:10px;color:#9a9aa0}
+.side h6{margin:6px 8px 4px;font:600 9px/1 -apple-system,sans-serif;letter-spacing:.1em;color:#8e8e93;text-transform:uppercase;display:flex;justify-content:space-between}
+.sr{display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:7px;font-size:12px;white-space:nowrap;color:#dcdce0}
+.sr .pc{margin-left:auto;font-size:10px;color:#8e8e93}.sr .pc.g{color:#30d158}
+.sr.sel{background:#2f4a73}.sr.l2{padding-left:26px}
+.sr small{font-size:9.5px;color:#8e8e93;display:block;margin-top:-1px}
+.sr .ic{width:14px;color:#9a9aa0;font-size:11px;text-align:center}
+.main{flex:1;min-width:0;padding:6px 20px 0;overflow:hidden;display:flex;flex-direction:column}
+.crumb{font-size:10px;color:#8e8e93;margin:4px 0 12px}
+.main h4{margin:0;font-size:17px;font-weight:700}
+.sub{font-size:10.5px;color:#8e8e93;margin-top:2px}
+.cov{margin:14px 0 4px}
+.cov .row{display:flex;align-items:baseline;gap:7px}.cov .row b{font-size:22px;font-weight:700}.cov .row span{font-size:11px;color:#a8a8ad}.cov .row em{margin-left:auto;font-style:normal;font-size:11px;color:#c9c9cd}
+.bar{height:6px;border-radius:3px;background:#3a3a3d;overflow:hidden;display:flex;margin-top:7px}
+.bar i{display:block;height:100%}
+.lg{display:flex;gap:16px;margin-top:8px;font-size:10px;color:#a8a8ad;flex-wrap:wrap}
+.lg i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px}
+.cB{background:#3b6fd0}.cO{background:#ff9f0a}.cL{background:#8fe3a8}.cG{background:#30d158}.cX{background:#6b6b70}
+.heat{display:grid;grid-auto-flow:column;grid-template-rows:repeat(5,1fr);gap:2px;margin:12px 0 10px;width:62%}
+.heat i{aspect-ratio:1;border-radius:1.5px;background:#2b2b2d}
+.lbl{font-size:9.5px;color:#8e8e93;margin:12px 0 7px;letter-spacing:.04em}
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:10px 9px}
+.cd .cv{aspect-ratio:3/2;border-radius:5px;overflow:hidden;position:relative;background:#2b2b2d}
+.cd b{display:block;font-size:11px;font-weight:600;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cd small{font-size:9px;color:#8e8e93}
+.cd .rg{position:absolute;right:5px;bottom:5px;width:20px;height:20px}
+.ph{position:absolute;inset:0;overflow:hidden}.ph i{position:absolute;inset:0;background-size:cover;background-position:center}
+.chips2{display:flex;gap:10px;font-size:10.5px;color:#c9c9cd;margin:10px 0 10px}
+.chips2 span::after{content:" ▾";color:#8e8e93;font-size:8px}
+.pgrid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;flex:1;min-height:0;overflow:hidden}
+.pt{position:relative;aspect-ratio:1;border-radius:3px;overflow:hidden;background:#2b2b2d}
+.pt.on{outline:2px solid #0a84ff;outline-offset:-1px}
+.raw{position:absolute;left:4px;top:4px;z-index:2;background:rgba(0,0,0,.68);font:600 7px/1 -apple-system,sans-serif;letter-spacing:.06em;padding:2px 4px;border-radius:2px;color:#f2f2f4}
+.stat{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:10px 0 4px}
+.stat div{background:#262628;border-radius:8px;padding:8px 10px;min-width:0}
+.stat small{display:block;font-size:9px;color:#a8a8ad;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.stat small::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:5px;background:var(--d)}
+.stat b{display:block;font-size:19px;font-weight:700;margin-top:2px}.stat i{font-style:normal;font-size:8.5px;color:#6f6f75}
+.otd{display:flex;gap:8px}.otd>div{width:96px}.otd .cv{aspect-ratio:3/2;border-radius:4px;overflow:hidden;position:relative}
+.otd b{display:block;font-size:10px;margin-top:4px}.otd small{font-size:8.5px;color:#8e8e93}
+.lrow{margin-top:9px}.lrow .t{display:flex;justify-content:space-between;font-size:11.5px}.lrow .t b{font-weight:600}.lrow .t span{font-size:9.5px;color:#8e8e93}
+.lrow .bar{margin-top:5px;height:4px}
+
+/* develop view */
+.dtool{height:40px;flex:none;display:flex;align-items:center;gap:14px;padding:0 16px;font-size:11px;color:#c9c9cd;position:relative}
+.dtool .nm{display:flex;flex-direction:column;line-height:1.1}.dtool .nm b{font-size:15px;color:#fff}.dtool .nm small{font-size:8.5px;color:#8e8e93}
+.dtool .mid{position:absolute;left:50%;transform:translateX(-50%);display:flex;gap:12px;white-space:nowrap}
+.dtool .mid .sep{width:1px;background:#3a3a3d;margin:0 -4px}
+.dtool .r{margin-left:auto;display:flex;gap:14px;align-items:center;white-space:nowrap;color:#8e8e93}
+.dtool .r .tg{width:30px;height:17px;border-radius:9px;background:#0a84ff;position:relative;display:inline-block;vertical-align:middle;margin-left:6px}
+.dtool .r .tg::after{content:"";position:absolute;right:2px;top:2px;width:13px;height:13px;border-radius:50%;background:#fff}
+.dtool .r .ex{color:#e6e6e9;background:#2c2c2e;border-radius:7px;padding:3px 9px}
+.dtool .ba{cursor:pointer;color:#fff;background:#3a3a3d;border-radius:6px;padding:3px 9px}
+.dtool .ba.hold{background:#0a84ff}
+.dev3{flex:1;display:flex;min-height:0}
+.lpane{width:196px;flex:none;padding:6px 8px 0 10px;overflow:hidden}
+.lpane h6{margin:8px 2px 6px;font:600 10px/1 -apple-system,sans-serif;color:#cfcfd4;display:flex;gap:6px;align-items:center}
+.lpane h6::before{content:"⌄";color:#8e8e93}
+.bgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px 8px}
+.bw{background:none;border:0;padding:0;color:#b8b8bd;font:10px/1.25 -apple-system,"Noto Sans TC",sans-serif;text-align:left;cursor:pointer}
+.bw[aria-pressed="true"] .fbi,.bw[aria-pressed="true"] .bd{outline:2px solid #f5b81c;outline-offset:1px}
+.bw .nmm{display:block;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bd{display:flex;flex-direction:column;height:60px;border-radius:3px;overflow:hidden;background:#121212;box-shadow:0 1px 3px rgba(0,0,0,.5)}
+.bd .t{height:13px;text-align:center;font:600 6.5px/13px -apple-system,sans-serif;letter-spacing:.14em;color:#fff;background:#141414}
+.bd .m{flex:1;display:grid;place-items:center;font:800 13px/1 "Bricolage Grotesque",-apple-system,sans-serif;letter-spacing:-.01em;background:var(--c);color:var(--f)}
+.bd .f{height:14px;background:#141414;color:#fff;font:600 7.5px/14px -apple-system,sans-serif;text-align:right;padding-right:7px;letter-spacing:.06em}
+.bd.none{background:transparent;border:1px dashed #5a5a5f;box-shadow:none}.bd.none .m{background:transparent;color:#8e8e93;font:500 10px/1.2 -apple-system,"Noto Sans TC",sans-serif;text-align:center;padding:0 6px}
+.cstage{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:8px 0}
+.cstage canvas{max-width:100%;max-height:480px;display:block;background:#000}
+.cstage small{font-size:10px;color:#8e8e93}
+.rpane{width:296px;flex:none;padding:6px 14px 0;overflow:hidden;display:flex;flex-direction:column;gap:9px}
+.tabs{display:flex;background:#242426;border-radius:9px;padding:3px;gap:2px}
+.tabs span{flex:1;text-align:center;padding:5px 0;border-radius:7px;font-size:10px;color:#9a9aa0}.tabs span.on{background:#3a3a3d;color:#fff}
+.hst{height:78px;background:#141416;border-radius:6px;width:100%;display:block}
+.srch{background:#2a2a2c;border-radius:7px;padding:6px 10px;font-size:11px;color:#8e8e93}
+.sect{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;margin-top:3px}.sect::before{content:"◉";font-size:9px;color:#9a9aa0;font-weight:400}
+.sect::after{content:"⌄";margin-left:auto;color:#8e8e93;font-weight:400}
+.sl{display:grid;grid-template-columns:62px 1fr 50px;align-items:center;gap:8px;font-size:11px}
+.sl>span{color:#c0c0c5;white-space:nowrap}.sl>b{font-weight:400;text-align:right;font-size:10.5px;color:#d8d8dc;white-space:nowrap}
+.tr{position:relative;height:16px;background:repeating-linear-gradient(90deg,#4a4a4e 0 1px,transparent 1px 8px) 0 6px/100% 5px no-repeat}
+.tr::before{content:"";position:absolute;left:0;right:0;top:7.5px;height:1.5px;background:#4a4a4e}
+.tr i{position:absolute;top:2px;width:3px;height:12px;border-radius:1.5px;background:#e6e6e9;transform:translateX(-50%);transition:left .25s}
+.lkcur{display:flex;align-items:center;gap:10px;background:#242426;border-radius:8px;padding:8px}
+.lkcur .bd{width:70px;height:46px;flex:none}.lkcur .bd .t{height:10px;line-height:10px;font-size:5px}.lkcur .bd .f{height:11px;line-height:11px;font-size:6px}.lkcur .bd .m{font-size:10px}
+.lkcur span{font-size:11px;color:#c0c0c5}
+.film2{height:74px;flex:none;display:flex;gap:5px;padding:7px 8px;background:#161618;border-top:1px solid #2b2b2d;overflow:hidden}
+.film2 .ft{width:78px;flex:none;border-radius:3px;overflow:hidden;position:relative}.film2 .ft.on{outline:2px solid #f5b81c;outline-offset:-2px}
+
+/* full-size detail showcase */
+section.dark{background:#111113;color:#ececf0}
+section.dark h2{color:#fff}section.dark .lead{color:#a8a8ad}
+section.dark .tag{color:#a8a8ad}
+.xstage{display:flex;justify-content:center}
+.xph{position:relative;max-width:100%;overflow:hidden;border-radius:6px;background:#000;touch-action:none;user-select:none;cursor:ew-resize;box-shadow:0 30px 70px -30px rgba(0,0,0,.8)}
+.xo,.xd{position:absolute;inset:0;width:100%;height:100%;display:block;background-size:100% 100%}
+.xd{clip-path:inset(0 0 0 50%)}
+.xl{position:absolute;top:14px;font:500 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;background:rgba(0,0,0,.6);color:#fff;padding:5px 10px;border-radius:4px}
+.xl.a{left:14px}.xl.b{right:14px}
+.xh{position:absolute;top:0;bottom:0;left:50%;width:34px;margin-left:-17px;cursor:ew-resize;outline-offset:-4px}
+.xh i{position:absolute;left:16px;top:0;bottom:0;width:2px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.35)}
+.xh::after{content:"◂ ▸";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:#fff;color:#141414;display:grid;place-items:center;font-size:12px;letter-spacing:2px;box-shadow:0 4px 14px rgba(0,0,0,.5)}
+.xchips{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:22px}
+.xchips button{display:flex;align-items:center;gap:10px;background:#1c1c1f;border:1.5px solid #2f2f33;color:#d8d8dc;border-radius:999px;padding:6px 16px 6px 6px;font:500 14px var(--body);cursor:pointer}
+.xchips button i{width:34px;height:34px;border-radius:50%;background-size:cover;background-position:center}
+.xchips button[aria-pressed="true"]{border-color:var(--marigold);color:#fff}
+.xlooks{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:28px}
+.xlk{background:none;border:0;padding:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:9px;color:#a8a8ad;font:500 12px var(--body);transition:transform .15s}
+.xlk:hover{transform:translateY(-4px) rotate(-2deg)}
+.xlk .fbi{width:104px;box-shadow:0 8px 18px -8px rgba(0,0,0,.8)}
+.xlk[aria-pressed="true"]{color:#fff}.xlk[aria-pressed="true"] .fbi{outline:2px solid var(--marigold);outline-offset:3px}
+/* film badges: the app's own badge images (Box format) */
+.fbi{display:block;width:100%;height:auto;border-radius:3px}
+.bgrid .fbi{box-shadow:0 1px 3px rgba(0,0,0,.5)}
+.lkcur .fbi{width:74px;flex:none}
+
+/* delete rule boxes */
+.rule{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:640px){.rule{grid-template-columns:1fr}}
+.rule .box{min-height:250px}.rule .nm{font-size:clamp(22px,2.6vw,30px)}
+.rule .ar{font:500 14px var(--mono);letter-spacing:.04em;padding:0 14px 16px;display:block}
+
+/* people */
+.three{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+.who{border-radius:12px;overflow:hidden;background:var(--white);border:1.5px solid var(--ink);display:flex;flex-direction:column}
+.who .top{background:var(--c);color:var(--fg,#fff);padding:18px 20px;font:800 26px/1.05 var(--display);letter-spacing:-.02em}
+.who .body{padding:20px;display:flex;flex-direction:column;gap:12px}
+.who p{color:var(--mute);font-size:16px}
+.who .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.who .tags span{font:500 10.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--ink);border-radius:999px;padding:3px 10px}
+
+/* download */
+.get{background:var(--marigold);border:1.5px solid var(--ink);border-radius:14px;padding:clamp(26px,5vw,56px);display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:28px 48px;align-items:end;box-shadow:8px 8px 0 rgba(20,20,20,.14)}
+@media (max-width:860px){.get{grid-template-columns:1fr}}
+.get h2{max-width:14ch}
+.get .meta{font:500 12px var(--mono);letter-spacing:.08em;line-height:1.9;text-transform:uppercase}
+.get .btn{font-size:18px;padding:16px 30px}
+.sha{font:400 11.5px var(--mono);word-break:break-all;margin-top:10px;opacity:.75}
+.how{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:26px;margin-top:48px}
+.how ol{margin:10px 0 0;padding-left:20px;color:var(--mute);font-size:15.5px;display:flex;flex-direction:column;gap:7px}
+.how code,.faq code{font:400 12.5px var(--mono);background:var(--paper2);padding:1px 6px;border-radius:4px;color:var(--ink);word-break:break-all}
+.faq{margin-top:56px;border-top:1.5px solid var(--ink)}
+.faq details{border-bottom:1px solid var(--line);padding:18px 0}
+.faq summary{cursor:pointer;font:600 19px var(--display);letter-spacing:-.01em;list-style:none;display:flex;justify-content:space-between;gap:16px}
+.faq summary::after{content:"+";font:400 22px var(--mono)}
+.faq details[open] summary::after{content:"–"}
+.faq p{color:var(--mute);margin-top:10px;max-width:70ch;font-size:16px}
+footer{padding-block:34px 44px;color:var(--mute);font-size:13.5px}
+footer .wrap{display:flex;flex-direction:column;gap:8px}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="PixelSync">
+      <svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a9bff"/><stop offset="1" stop-color="#0b44c9"/></linearGradient></defs><rect x="3" y="3" width="58" height="58" rx="15" fill="url(#lg)"/><rect x="14" y="19" width="30" height="26" rx="3" fill="#fff" opacity=".35" transform="rotate(-6 29 32)"/><rect x="17" y="20" width="32" height="26" rx="3" fill="#fff"/><circle cx="25" cy="27" r="4" fill="#ffd24a"/><path d="M17 46V38l8-8 7 7 7-9 10 10v8z" fill="#2a7de8"/></svg>
+      PixelSync
+    </a>
+    <nav class="links" aria-label="Sections">
+      <a href="#workflow" data-i18n="nav.workflow">Workflow</a>
+      <a href="#develop" data-i18n="nav.develop">Develop</a>
+      <a href="#backup" data-i18n="nav.backup">Backup</a>
+      <a href="#faq" data-i18n="nav.faq">FAQ</a>
+    </nav>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-lang="zh-Hant" aria-pressed="false">繁中</button>
+    </div>
+    <a class="btn sm" href="#download" data-i18n="nav.download">Download</a>
+  </div>
+</header>
+
+<main id="top">
+<!-- HERO -->
+<section class="hero" style="padding-bottom:clamp(48px,7vw,96px)">
+  <div class="wrap">
+    <div class="hero-copy">
+      <div class="tag" style="--c:var(--tomato)" data-i18n="hero.tag">PixelSync for Mac</div>
+      <h1 data-i18n="hero.h1">Every photo, accounted for.</h1>
+      <p class="lead" data-i18n="hero.sub">PixelSync is a Mac app for photographers, designers and creators who keep everything.</p>
+      <div class="cta-row">
+        <a class="btn" href="#download" data-i18n="cta">Download for Mac</a>
+        <a class="btn ghost" href="#workflow" data-i18n="hero.cta2">See the workflow</a>
+      </div>
+      <div class="small"><span data-i18n="m1">macOS 14 or later</span><span data-i18n="m2">Apple silicon and Intel</span><span data-i18n="m3">No account, no cloud</span></div>
+    </div>
+    <div class="stage">
+      <div class="block"></div>
+      <div class="sticker"><b id="stickerPct">64%</b><span data-i18n="sticker">In Google Photos</span></div>
+      <div class="mock" id="mockA" data-w="980" data-h="650" role="img" aria-label="PixelSync library view with album covers and backup coverage"><div class="app"></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="film" aria-hidden="true"><span data-i18n="film1">Frame 01 · Why it exists</span></div>
+
+<!-- PAIN -->
+<section id="why">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="tag" style="--c:var(--ultra)" data-i18n="p.tag">Sound familiar?</div>
+      <h2 data-i18n="p.h2">Keeping every photo is easy. Trusting where they are is not.</h2>
+    </div>
+    <div class="pains">
+      <div class="box" style="--c1:var(--marigold);--fg:var(--ink)"><span class="hd"><i>No. 01</i><i data-i18n="p1.t">Not knowing</i></span><span class="nm" data-i18n="p1.q">“I think they're backed up. I think.”</span><span class="ft"><i>Status</i><i>?</i></span></div>
+      <div class="box" style="--c1:var(--tomato);--fg:#fff"><span class="hd"><i>No. 02</i><i data-i18n="p2.t">Fear of deleting</i></span><span class="nm" data-i18n="p2.q">“I'd free up space, but what if I lose the originals?”</span><span class="ft"><i>Risk</i><i>!</i></span></div>
+      <div class="box" style="--c1:var(--ultra);--fg:#fff"><span class="hd"><i>No. 03</i><i data-i18n="p3.t">Too many tools</i></span><span class="nm" data-i18n="p3.q">“One app to import, one to sort, one to edit, one to back up.”</span><span class="ft"><i>Apps</i><i>4</i></span></div>
+      <div class="box" style="--c1:var(--plum);--fg:#fff"><span class="hd"><i>No. 04</i><i data-i18n="p4.t">Scattered copies</i></span><span class="nm" data-i18n="p4.q">“A drive, a phone and a cloud. None of them agree.”</span><span class="ft"><i>Places</i><i>3</i></span></div>
+    </div>
+    <div class="story">
+      <div class="tag" style="--c:var(--teal)" data-i18n="s0.tag">Why we built it</div>
+      <p data-i18n="s0.p">PixelSync began as one photographer's fix.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WORKFLOW -->
+<section id="workflow" class="band">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="tag" style="--c:var(--orange)" data-i18n="wf.tag">The whole workflow</div>
+      <h2 data-i18n="wf.h2">From the camera to the cloud, in one place.</h2>
+      <p class="lead" data-i18n="wf.lead">Every stage of a photo's life, side by side.</p>
+    </div>
+    <div class="strip">
+      <div class="strip-in">
+        <div class="frame" style="--c1:var(--marigold);--fg:var(--ink)"><div class="no"><span>01</span><span>▸</span></div><h3 data-i18n="wf1.h">Import</h3><p data-i18n="wf1.p">Import</p><span class="st soon" data-i18n="soon">Coming</span></div>
+        <div class="frame" style="--c1:var(--ultra);--fg:#fff"><div class="no"><span>02</span><span>▸</span></div><h3 data-i18n="wf2.h">Organize</h3><p data-i18n="wf2.p">Organize</p><span class="st" data-i18n="now">Available now</span></div>
+        <div class="frame" style="--c1:var(--pink);--fg:#fff"><div class="no"><span>03</span><span>▸</span></div><h3 data-i18n="wf3.h">Clean up</h3><p data-i18n="wf3.p">Clean up</p><span class="st soon" data-i18n="soon">Coming</span></div>
+        <div class="frame" style="--c1:var(--teal);--fg:#fff"><div class="no"><span>04</span><span>▸</span></div><h3 data-i18n="wf4.h">Develop</h3><p data-i18n="wf4.p">Develop</p><span class="st" data-i18n="now">Available now</span></div>
+        <div class="frame" style="--c1:var(--plum);--fg:#fff"><div class="no"><span>05</span><span>▸</span></div><h3 data-i18n="wf5.h">Back up</h3><p data-i18n="wf5.p">Back up</p><span class="st" data-i18n="now">Available now</span></div>
+      </div>
+    </div>
+    <p class="strip-note" data-i18n="wf.note">Next after that: ratings, keywords and search.</p>
+  </div>
+</section>
+
+<!-- DEVELOP -->
+<section id="develop">
+  <div class="wrap">
+    <div class="dev-head">
+      <div class="txt">
+        <div class="tag" style="--c:var(--pink)" data-i18n="d.tag">Develop</div>
+        <h2 data-i18n="d.h2">Give every photo a look.</h2>
+        <p class="lead" data-i18n="d.lead">Develop</p>
+      </div>
+      <div class="txt">
+        <div class="chips" id="chips"></div>
+        <ul class="ticks" style="--c:var(--pink)">
+          <li data-i18n="d.t1">Edits save as you work.</li>
+          <li data-i18n="d.t2">Copy settings.</li>
+          <li data-i18n="d.t3">Never touched.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="mock" id="mockB" data-w="1080" data-h="720" role="group" aria-label="PixelSync Develop view"><div class="app"></div></div>
+    <p class="caption" data-i18n="d.hint">Pick a look.</p>
+  </div>
+</section>
+
+<!-- DETAIL -->
+<section id="detail" class="dark">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="tag" style="--c:var(--marigold)" data-i18n="x.tag">Detail</div>
+      <h2 data-i18n="x.h2">See every detail.</h2>
+      <p class="lead" data-i18n="x.lead">Drag the handle. The same photo, before and after a look, at full size.</p>
+    </div>
+    <div class="xstage" id="xstage">
+      <div class="xph" id="xph">
+        <div class="xo" id="xo"></div>
+        <div class="xd" id="xd"></div>
+        <span class="xl a" id="lblA"></span><span class="xl b" id="lblB"></span>
+        <div class="xh" id="xh" role="slider" tabindex="0" aria-label="Before and after" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><i></i></div>
+      </div>
+    </div>
+    <div class="xchips" id="xchips" role="group" aria-label="Photos"></div>
+    <div class="xlooks" id="xlooks" role="group" aria-label="Looks"></div>
+  </div>
+</section>
+
+<!-- BACKUP -->
+<section id="backup" class="band">
+  <div class="wrap">
+    <div class="split">
+      <div class="txt">
+        <div class="tag" style="--c:var(--teal)" data-i18n="b.tag">Back up</div>
+        <h2 data-i18n="b.h2">See what's safe at a glance.</h2>
+        <p class="lead" data-i18n="b.lead">Backup</p>
+        <ul class="ticks">
+          <li data-i18n="b.t1">t1</li>
+          <li data-i18n="b.t2">t2</li>
+          <li data-i18n="b.t3">t3</li>
+        </ul>
+      </div>
+      <div class="mock" id="mockC" data-w="980" data-h="600" role="img" aria-label="PixelSync overview of all libraries and their backup status"><div class="app"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ORGANIZE -->
+<section id="library">
+  <div class="wrap">
+    <div class="split rev">
+      <div class="txt">
+        <div class="tag" style="--c:var(--ultra)" data-i18n="c.tag">Organize</div>
+        <h2 data-i18n="c.h2">Your folders, exactly as you keep them.</h2>
+        <p class="lead" data-i18n="c.lead">Organize</p>
+        <div class="stats">
+          <div><b>500k</b><span data-i18n="c.s1">photos, opening in about half a second</span></div>
+          <div><b>0</b><span data-i18n="c.s2">files changed in your library</span></div>
+        </div>
+      </div>
+      <div class="mock" id="mockD" data-w="980" data-h="600" role="img" aria-label="PixelSync album photo grid"><div class="app"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROTECT -->
+<section id="safe" class="band">
+  <div class="wrap">
+    <div class="split">
+      <div class="txt">
+        <div class="tag" style="--c:var(--tomato)" data-i18n="f.tag">Protect</div>
+        <h2 data-i18n="f.h2">Nothing leaves without proof.</h2>
+        <p class="lead" data-i18n="f.lead">Protect</p>
+        <ul class="ticks" style="--c:var(--tomato)">
+          <li data-i18n="f.t1">t1</li>
+          <li data-i18n="f.t2">t2</li>
+        </ul>
+      </div>
+      <div class="rule">
+        <div class="box" style="--c1:var(--teal);--fg:#fff"><span class="hd"><i data-i18n="f.r1.h">Rule 1</i><i>✓</i></span><span class="nm" data-i18n="f.r1.q">A verified copy is on your Mac.</span><span class="ar" data-i18n="f.r1.a">→ Deleted from the phone</span></div>
+        <div class="box" style="--c1:var(--orange);--fg:var(--ink)"><span class="hd"><i data-i18n="f.r2.h">Rule 2</i><i>?</i></span><span class="nm" data-i18n="f.r2.q">No copy found on your Mac.</span><span class="ar" data-i18n="f.r2.a">→ Moved to the PixelSync Trash.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO -->
+<section>
+  <div class="wrap">
+    <div class="sec-head"><div class="tag" style="--c:var(--pink)" data-i18n="w.tag">Who it's for</div><h2 data-i18n="w.h2">Made for people who make and keep images.</h2></div>
+    <div class="three">
+      <div class="who" style="--c:var(--ultra)"><div class="top" data-i18n="w1.h">Photographers</div><div class="body"><p data-i18n="w1.p">p</p><div class="tags"><span data-i18n="w1.a">Library</span><span data-i18n="w1.b">Develop</span><span data-i18n="w1.c">Backup</span></div></div></div>
+      <div class="who" style="--c:var(--pink)"><div class="top" data-i18n="w2.h">Designers</div><div class="body"><p data-i18n="w2.p">p</p><div class="tags"><span data-i18n="w2.a">Looks</span><span data-i18n="w2.b">Copy settings</span><span data-i18n="w2.c">Plain folders</span></div></div></div>
+      <div class="who" style="--c:var(--teal)"><div class="top" data-i18n="w3.h">Creators</div><div class="body"><p data-i18n="w3.p">p</p><div class="tags"><span data-i18n="w3.a">Photos and video</span><span data-i18n="w3.b">Phone sync</span><span data-i18n="w3.c">Offline</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOAD + FAQ -->
+<section id="download" class="band">
+  <div class="wrap">
+    <div class="get">
+      <div style="display:flex;flex-direction:column;gap:22px">
+        <div class="tag" style="--c:var(--ink)" data-i18n="g.tag">PixelSync 1.8.0</div>
+        <h2 data-i18n="g.h2">Try it on your own photos.</h2>
+        <div><a class="btn" id="dlMain" href="#download" data-i18n="cta">Download for Mac</a></div>
+      </div>
+      <div>
+        <div class="meta"><span data-i18n="m1">macOS 14 or later</span><br><span data-i18n="m2">Apple silicon and Intel</span><br>PixelSync-1.8.0.dmg · 27 MB</div>
+        <p class="sha">SHA-256 dc50cd0bcacb7f021c1747255b2837680d4f1277e4cebb1d8c103c79d7772867</p>
+      </div>
+    </div>
+    <div class="how">
+      <div><h3 data-i18n="i1.h">Install</h3><ol>
+        <li data-i18n-html="i1.1">1</li><li data-i18n-html="i1.2">2</li><li data-i18n="i1.3">3</li></ol></div>
+      <div><h3 data-i18n="i2.h">Upgrading from an earlier version?</h3><ol>
+        <li data-i18n="i2.1">1</li><li data-i18n-html="i2.2">2</li></ol></div>
+      <div><h3 data-i18n="i3.h">To sync a phone</h3><ol>
+        <li data-i18n="i3.1">1</li><li data-i18n="i3.2">2</li><li data-i18n="i3.3">3</li></ol></div>
+    </div>
+    <div class="faq" id="faq">
+      <details><summary data-i18n="q0.q">q</summary><p data-i18n="q0.a">a</p></details>
+      <details><summary data-i18n="q1.q">q</summary><p data-i18n="q1.a">a</p></details>
+      <details><summary data-i18n="q2.q">q</summary><p data-i18n="q2.a">a</p></details>
+      <details><summary data-i18n="q3.q">q</summary><p data-i18n="q3.a">a</p></details>
+      <details><summary data-i18n="q4.q">q</summary><p data-i18n="q4.a">a</p></details>
+      <details><summary data-i18n="q5.q">q</summary><p data-i18n="q5.a">a</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<div class="film" aria-hidden="true"><span>PixelSync · 1.8.0 · 24 · 25</span></div>
+<footer>
+  <div class="wrap">
+    <div data-i18n="ft1">PixelSync is an independent project.</div>
+    <div data-i18n="ft2">Google Photos and Pixel are trademarks of Google.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+'use strict';
+/* ====== Download link: change this one line to point at the hosted DMG ====== */
+var DMG_URL='https://github.com/MaxCSHan/pixelsync-releases/releases/latest/download/PixelSync.dmg';
+/* the photos are inlined by site/build.py; they are not in git (PD-33) */
+var IMG={frost:'img/frost.jpg'};
+var root=document.documentElement;
+var US=['img/u/00.jpg','img/u/01.jpg','img/u/02.jpg','img/u/03.jpg','img/u/04.jpg','img/u/05.jpg','img/u/06.jpg','img/u/07.jpg','img/u/08.jpg','img/u/09.jpg','img/u/10.jpg','img/u/11.jpg','img/u/12.jpg','img/u/13.jpg','img/u/14.jpg','img/u/15.jpg','img/u/16.jpg','img/u/17.jpg','img/u/18.jpg','img/u/19.jpg','img/u/20.jpg','img/u/21.jpg','img/u/22.jpg','img/u/23.jpg','img/u/24.jpg','img/u/25.jpg','img/u/26.jpg','img/u/27.jpg','img/u/28.jpg','img/u/29.jpg','img/u/30.jpg','img/u/31.jpg','img/u/32.jpg','img/u/33.jpg','img/u/34.jpg'];
+Object.keys(IMG).forEach(function(k){root.style.setProperty('--img-'+k,'url('+IMG[k]+')')});
+US.forEach(function(u,i){root.style.setProperty('--u'+i,'url('+u+')')});
+
+var I18N={
+en:{
+'nav.workflow':'Workflow','nav.develop':'Develop','nav.backup':'Backup','nav.faq':'FAQ','nav.download':'Download',
+'hero.tag':'PixelSync for Mac','hero.h1':'Every photo, accounted for.',
+'hero.sub':'PixelSync is a Mac app for photographers, designers and creators who keep everything. Browse your whole library, develop RAW files with film-style looks, and always know which photos are safely backed up.',
+'cta':'Download for Mac','hero.cta2':'See the workflow','m1':'macOS 14 or later','m2':'Apple silicon and Intel','m3':'No account, no cloud','sticker':'In Google Photos',
+'film1':'Frame 01 · Why it exists',
+'p.tag':'Sound familiar?','p.h2':'Keeping every photo is easy. Trusting where they are is not.',
+'p1.t':'Not knowing','p1.q':'“I think they\'re backed up. I think.”','p2.t':'Fear of deleting','p2.q':'“I\'d free up space, but what if I lose the originals?”',
+'p3.t':'Too many tools','p3.q':'“One app to import, one to sort, one to edit, one to back up.”','p4.t':'Scattered copies','p4.q':'“A drive, a phone and a cloud. None of them agree.”',
+'s0.tag':'Why we built it','s0.p':'PixelSync began as one photographer\'s fix: a calm way to send a huge library to an old Pixel for free Google Photos backup, and to finally see what had made it. It grew into a whole home for the photos: browse them, develop them, and trust them.',
+'wf.tag':'The whole workflow','wf.h2':'From the camera to the cloud, in one place.','wf.lead':'Every stage of a photo\'s life, side by side. Some are ready today. The rest are coming, and we say which is which.',
+'wf1.h':'Import','wf1.p':'Bring in cards, iPhone and folders. They land in the right album, dated and named your way.',
+'wf2.h':'Organize','wf2.p':'Browse every library as albums, years and a calendar. Photos and video clips together, even with the drive unplugged.',
+'wf3.h':'Clean up','wf3.p':'Find exact and similar duplicates, compare them side by side, and remove the extras safely.',
+'wf4.h':'Develop','wf4.p':'Develop RAW files and dress them in film-style looks. Edits save as you work.',
+'wf5.h':'Back up','wf5.p':'Sync to your phone, track what reached Google Photos, and undo anything.',
+'now':'Available now','soon':'Coming','wf.note':'Next after that: ratings, keywords and search, so you can find the photo you want in seconds.',
+'d.tag':'Develop','d.h2':'Give every photo a look.','d.lead':'Develop RAW files with light, color, detail and crop tools, then dress them in a film-style look with one click. Every look wears its own little badge.',
+'d.t1':'Edits save as you work. There is no Save button.','d.t2':'Copy one photo\'s settings to a whole set, so a shoot stays consistent.','d.t3':'Your original file is never touched.',
+'d.hint':'Pick a film look on the left. Hold Before · After to see the photo without it. The photo is one of ours, and every look is rendered by PixelSync.',
+'b.tag':'Back up','b.h2':'See what\'s safe at a glance.','b.lead':'Every library and album shows how much of it is safely in Google Photos, how much is waiting on your phone, and how much lives only on your Mac. No guessing.',
+'b.t1':'Send photos to your phone over USB with live progress, then a re-count to verify they arrived.','b.t2':'When PixelSync has to infer a backup, it says “likely” and lets you confirm.','b.t3':'Undo a sync. Every file left out shows you why.',
+'c.tag':'Organize','c.h2':'Your folders, exactly as you keep them.','c.lead':'PixelSync reads your library and never writes to it. Albums, years and drives stay the way you organised them, and everything keeps working when the drive is unplugged.',
+'c.s1':'photos, opening in about half a second','c.s2':'files changed in your library',
+'f.tag':'Protect','f.h2':'Nothing leaves without proof.','f.lead':'Freeing up space on your phone is scary when you\'re not sure the originals are safe. PixelSync follows one rule, every time.',
+'f.t1':'Your own work (favorites, edits, history) gets verified daily, weekly and monthly backups.','f.t2':'Add a second disk for an extra copy.',
+'f.r1.h':'Rule 1','f.r1.q':'A verified copy is on your Mac.','f.r1.a':'→ Deleted from the phone','f.r2.h':'Rule 2','f.r2.q':'No copy found on your Mac.','f.r2.a':'→ Moved to the PixelSync Trash. Put Back is always there.',
+'w.tag':'Who it\'s for','w.h2':'Made for people who make and keep images.',
+'w1.h':'Photographers','w1.p':'You shoot RAW and keep years of folders on drives. You want to find anything, develop it well, and never wonder what\'s backed up.','w1.a':'Library','w1.b':'Develop','w1.c':'Backup',
+'w2.h':'Designers','w2.p':'You live by color and consistency. You want looks you can apply across a whole set, and a library that is just your own folders.','w2.a':'Looks','w2.b':'Copy settings','w2.c':'Plain folders',
+'w3.h':'Creators','w3.p':'You shoot stills and video clips and keep making more. You want everything in one place, and backed up without the effort.','w3.a':'Photos and video','w3.b':'Phone sync','w3.c':'Offline',
+'g.tag':'PixelSync 1.8.0','g.h2':'Try it on your own photos.',
+'i1.h':'Install','i1.1':'Open the DMG and drag <b>PixelSync.app</b> to Applications.','i1.2':'The first launch is blocked by macOS, because the app has no Apple Developer ID. Open <b>System Settings › Privacy &amp; Security</b> and click <b>Open Anyway</b>.','i1.3':'Later launches go straight through.',
+'i2.h':'Upgrading from an earlier version?','i2.1':'1.8.0 upgrades your data, and older builds then open it read-only.','i2.2':'Quit PixelSync and copy <code>~/Library/Application Support/PixelSync/</code> to a dated folder first. That copy is your way back.',
+'i3.h':'To sync a phone','i3.1':'On the phone: Settings › About phone, tap Build number 7 times.','i3.2':'Settings › Developer options › turn on USB debugging.','i3.3':'Connect over USB and tap Allow on the phone.',
+'q0.q':'Which parts can I use today?','q0.a':'Organizing libraries, developing RAW files with looks, and backing up through a phone are ready now. Importing from cards, finding duplicates, and ratings and keywords are on the way.',
+'q1.q':'Do I need a Pixel?','q1.a':'No. The library and Develop need no phone at all. Sync works with any Android phone whose photos live under /sdcard/DCIM/. An old Pixel is what makes the original-quality Google Photos backup free.',
+'q2.q':'Will it change my original photos?','q2.a':'No. Library folders are read-only for PixelSync. Edits are stored in PixelSync\'s own database, and exports go to a folder you choose outside your libraries.',
+'q3.q':'What can I develop today?','q3.a':'RAW files, with light, color, detail, effects and crop. Editing JPEG and HEIC, masks and lens corrections are on the way.',
+'q4.q':'Does it send my photos anywhere?','q4.a':'Only to the phone you plug in. PixelSync has no account and no cloud service, and your data stays on your Mac.',
+'q5.q':'Why does macOS warn me when I open it?','q5.a':'The app is ad-hoc signed and not notarized, so macOS asks you to approve it once. You can check the download against the SHA-256 above with <code>shasum -a 256 PixelSync-1.8.0.dmg</code>.',
+'ft1':'PixelSync is an independent project.','ft2':'Google Photos and Pixel are trademarks of Google. PixelSync is not affiliated with or endorsed by Google. The app views on this page use sample data. Photos in the grids are from Unsplash.',
+/* app UI strings, as in the app */
+'x.tag':'Detail','x.h2':'See every detail.','x.lead':'Drag the handle. The same RAW file, with and without a film look, at full size. Rendered by PixelSync.','x.p1':'Snow','x.p2':'Valley','x.p3':'Mirror','x.p4':'Night','x.look':'Look',
+'u.library':'Library','u.develop':'Develop','u.ready':'Ready','u.free':'100.28 GB free of 120.17 GB','u.libs':'Libraries','u.all':'All libraries','u.of':' of ','u.add':'Add Source','u.fav':'Favorites',
+'u.files':'files','u.ingoogle':'in Google Photos','u.notsent':'Not sent','u.onpixel':'On Pixel','u.likely':'Likely backed up','u.done':'Backed up','u.excl':'Excluded','u.unk':'Not on Pixel · unknown','u.albums':'Albums','u.lastscan':'Last scan Oct 17','u.otd':'On this day','u.jobs':'Sync jobs','u.photos':'Photos','u.status':'Status','u.camera':'Camera','u.reveal':'Reveal in Finder','u.check':'Check This Album','u.agoyr':'a year ago','u.yrsago':'years ago','u.backedup':'backed up',
+'u.ba':'Before · After','u.split':'Split','u.ref':'Reference','u.oor':'Out of range','u.fit':'Fit','u.sur':'Surround','u.full':'Full screen','u.auto':'Auto','u.reset':'Reset','u.sync':'Sync','u.asy':'Auto Sync','u.export':'Export…',
+'u.adjust':'Adjust','u.crop':'Crop','u.remove':'Remove','u.search':'Search controls','u.look':'Look','u.strength':'Strength','u.light':'Light','u.color':'Color','u.effects':'Effects','u.toolkit':'Toolkit (Lab)','u.nolook':'No look',
+'c.exposure':'Exposure','c.contrast':'Contrast','c.highlights':'Highlights','c.shadows':'Shadows','c.whites':'Whites','c.blacks':'Blacks','c.clarity':'Clarity','c.temp':'Temp','c.sat':'Saturation','c.vignette':'Vignette','c.grain':'Grain',
+'k.sunday':'Sunday','k.harbor':'Harbor','k.peach':'Peach','k.fern':'Fern','k.noir':'Noir',
+'a1':'Autumn forest','a2':'Lake and peaks','a3':'Golden cove','a4':'Granite valley','a5':'Shoreline','a6':'Sunrise ridges','a7':'Autumn lake','a8':'City at night','a9':'Warm hills','a10':'Dune walk',
+'chips':'Light|Color|Detail|Effects|Crop and angle|History and snapshots|Looks and presets'
+},
+'zh-Hant':{
+'nav.workflow':'工作流程','nav.develop':'沖印','nav.backup':'備份','nav.faq':'常見問題','nav.download':'下載',
+'hero.tag':'PixelSync for Mac','hero.h1':'每一張照片，都有交代。',
+'hero.sub':'PixelSync 是為攝影師、設計師與創作者設計的 Mac App，給什麼都想留著的人。瀏覽整座圖庫、沖印 RAW 檔並套上底片風格，而且隨時知道哪些照片已經安全備份。',
+'cta':'下載 Mac 版','hero.cta2':'看看工作流程','m1':'macOS 14 或以上','m2':'Apple 晶片與 Intel','m3':'不用帳號、不上雲端','sticker':'已在 Google 相簿',
+'film1':'第 01 格 · 為什麼存在',
+'p.tag':'是不是很熟悉？','p.h2':'留下每一張照片很容易，難的是安心知道它們在哪。',
+'p1.t':'不知道','p1.q':'「我想它們備份了，應該吧。」','p2.t':'不敢刪','p2.q':'「我想釋出空間，但萬一原始檔不見了呢？」',
+'p3.t':'工具太多','p3.q':'「匯入用一個 App、整理一個、沖印一個、備份又一個。」','p4.t':'到處都是副本','p4.q':'「一顆硬碟、一支手機、一個雲端，三邊都對不起來。」',
+'s0.tag':'為什麼做它','s0.p':'PixelSync 起初只是一位攝影師的解法：用安心的方式，把龐大的圖庫送到舊 Pixel 上，享受免費的 Google 相簿備份，並且終於能看到哪些真的備份成功。後來它長成照片的完整家：瀏覽、沖印，而且可以信任。',
+'wf.tag':'完整的工作流程','wf.h2':'從相機到雲端，一個地方就夠。','wf.lead':'一張照片一生的每個階段，並排在這裡。有些今天就能用，其他的即將推出，我們會清楚標明。',
+'wf1.h':'匯入','wf1.p':'匯入記憶卡、iPhone 與資料夾。照片會落在對的相簿，依你的方式命名與分日期。',
+'wf2.h':'整理','wf2.p':'用相簿、年份與日曆瀏覽每座圖庫。照片與影片一起看，硬碟拔掉也行。',
+'wf3.h':'清理','wf3.p':'找出完全相同與相似的重複照片，並排比較，安全地移除多餘的。',
+'wf4.h':'沖印','wf4.p':'沖印 RAW 檔，並套上底片風格。調整會在你操作時自動儲存。',
+'wf5.h':'備份','wf5.p':'同步到手機、追蹤哪些已到 Google 相簿，並且隨時可以復原。',
+'now':'現在可用','soon':'即將推出','wf.note':'再接下來：評等、關鍵字與搜尋，讓你幾秒內找到想要的照片。',
+'d.tag':'沖印','d.h2':'讓每張照片都有自己的風格。','d.lead':'用光線、色彩、細節與裁切工具沖印 RAW 檔，再一鍵套上底片風格。每種風格都有自己的小徽章。',
+'d.t1':'調整會在你操作時自動儲存，沒有「儲存」按鈕。','d.t2':'把一張照片的設定拷貝到整組照片，讓整次拍攝保持一致。','d.t3':'你的原始檔絕不會被更動。',
+'d.hint':'在左邊選一個底片風格。按住「前後對比」可以看沒有套用風格的照片。照片是我們自己的，每種風格都由 PixelSync 沖印。',
+'b.tag':'備份','b.h2':'一眼看出哪些是安全的。','b.lead':'每座圖庫與每本相簿都會顯示：有多少已安全在 Google 相簿、有多少還在手機上等待、有多少只存在你的 Mac。不用再猜。',
+'b.t1':'用 USB 把照片傳到手機，即時顯示進度，並在最後重新計數確認都到了。','b.t2':'當 PixelSync 只能推斷已備份時，會說「可能」，讓你自己確認。','b.t3':'可以復原同步。每個被排除的檔案都會告訴你原因。',
+'c.tag':'整理','c.h2':'你的資料夾，維持你整理的樣子。','c.lead':'PixelSync 只讀取你的圖庫，從不寫入。相簿、年份與硬碟都維持你原本的整理方式，硬碟拔掉時也能繼續瀏覽。',
+'c.s1':'張照片，約半秒就能開啟','c.s2':'個檔案被更動',
+'f.tag':'守護','f.h2':'沒有證明，就不會離開。','f.lead':'不確定原始檔安不安全時，釋出手機空間讓人害怕。PixelSync 每一次都遵守同一條規則。',
+'f.t1':'你自己的成果（喜好項目、調整、記錄）有每日、每週、每月的已驗證備份。','f.t2':'還可以加一顆第二硬碟，多一份副本。',
+'f.r1.h':'規則 1','f.r1.q':'Mac 上有已驗證的副本。','f.r1.a':'→ 從手機刪除','f.r2.h':'規則 2','f.r2.q':'Mac 上找不到副本。','f.r2.a':'→ 移到 PixelSync 垃圾桶。隨時可以放回。',
+'w.tag':'適合誰','w.h2':'為創作影像、也珍藏影像的人而做。',
+'w1.h':'攝影師','w1.p':'你拍 RAW，多年的資料夾放在硬碟裡。你想找得到任何一張、沖印得漂亮，而且不用再猜哪些已備份。','w1.a':'圖庫','w1.b':'沖印','w1.c':'備份',
+'w2.h':'設計師','w2.p':'你靠色彩與一致性吃飯。你想把風格套用到整組照片，而且圖庫就是你自己的資料夾。','w2.a':'風格','w2.b':'拷貝設定','w2.c':'單純資料夾',
+'w3.h':'創作者','w3.p':'你拍照也拍影片，而且一直在產出。你想把一切放在同一處，不費力地完成備份。','w3.a':'照片與影片','w3.b':'手機同步','w3.c':'離線',
+'g.tag':'PixelSync 1.8.0','g.h2':'拿你自己的照片試試看。',
+'i1.h':'安裝','i1.1':'開啟 DMG，把 <b>PixelSync.app</b> 拖到「應用程式」。','i1.2':'第一次開啟會被 macOS 擋下，因為這個 App 沒有 Apple 開發者 ID。請開啟<b>系統設定 › 隱私權與安全性</b>，點選<b>強制打開</b>。','i1.3':'之後開啟就不會再被擋。',
+'i2.h':'從舊版升級？','i2.1':'1.8.0 會升級你的資料，之後舊版只能以唯讀方式開啟。','i2.2':'請先結束 PixelSync，把 <code>~/Library/Application Support/PixelSync/</code> 複製到一個標有日期的資料夾。那份複本就是你的退路。',
+'i3.h':'同步手機','i3.1':'在手機上：設定 › 關於手機，連點「版本號碼」7 次。','i3.2':'設定 › 開發人員選項 › 開啟 USB 偵錯。','i3.3':'用 USB 連接，並在手機上點「允許」。',
+'q0.q':'現在哪些功能可以用？','q0.a':'整理圖庫、沖印 RAW 檔並套用風格，以及透過手機備份，現在都可以用。從記憶卡匯入、找出重複照片，以及評等與關鍵字即將推出。',
+'q1.q':'一定要有 Pixel 嗎？','q1.a':'不用。圖庫與沖印完全不需要手機。同步適用於任何照片放在 /sdcard/DCIM/ 的 Android 手機。舊 Pixel 則能讓原始畫質的 Google 相簿備份免費。',
+'q2.q':'它會更動我的原始照片嗎？','q2.a':'不會。圖庫資料夾對 PixelSync 是唯讀的。調整存放在 PixelSync 自己的資料庫，匯出則放到你在圖庫以外選的資料夾。',
+'q3.q':'現在可以沖印什麼？','q3.a':'RAW 檔，包含光線、色彩、細節、效果與裁切。JPEG 與 HEIC 的調整、遮色片與鏡頭校正即將推出。',
+'q4.q':'它會把我的照片傳到別的地方嗎？','q4.a':'只會傳到你插上的那支手機。PixelSync 沒有帳號，也沒有雲端服務，你的資料都留在 Mac 上。',
+'q5.q':'為什麼開啟時 macOS 會警告？','q5.a':'這個 App 使用臨時簽章，沒有經過公證，所以 macOS 會請你核准一次。你可以用 <code>shasum -a 256 PixelSync-1.8.0.dmg</code> 對照上方的 SHA-256 檢查下載檔。',
+'ft1':'PixelSync 是獨立專案。','ft2':'Google 相簿與 Pixel 是 Google 的商標。PixelSync 與 Google 沒有隸屬或背書關係。本頁的 App 畫面使用範例資料，縮圖相簿中的照片來自 Unsplash。',
+'x.tag':'細節','x.h2':'每個細節，都看得見。','x.lead':'拖動滑桿，看同一個 RAW 檔有沒有套上底片風格，以完整尺寸呈現，由 PixelSync 沖印。','x.p1':'雪地','x.p2':'山谷','x.p3':'鏡面','x.p4':'夜景','x.look':'風格',
+'u.library':'圖庫','u.develop':'沖印','u.ready':'已就緒','u.free':'可用 100.28 GB / 共 120.17 GB','u.libs':'圖庫','u.all':'所有圖庫','u.of':' / ','u.add':'新增來源','u.fav':'喜好項目',
+'u.files':'個檔案','u.ingoogle':'已在 Google 相簿','u.notsent':'尚未傳送','u.onpixel':'在 Pixel 上','u.likely':'可能已備份','u.done':'已備份','u.excl':'已排除','u.unk':'不在 Pixel 上 · 狀態未知','u.albums':'相簿','u.lastscan':'上次掃描 10 月 17 日','u.otd':'那年今日','u.jobs':'同步項目','u.photos':'照片','u.status':'狀態','u.camera':'相機','u.reveal':'在 Finder 中顯示','u.check':'檢查此相簿','u.agoyr':'一年前','u.yrsago':'年前','u.backedup':'已備份',
+'u.ba':'前後對比','u.split':'分割','u.ref':'參考','u.oor':'超出範圍','u.fit':'符合視窗','u.sur':'背景','u.full':'全螢幕檢視','u.auto':'自動','u.reset':'重設','u.sync':'同步','u.asy':'自動同步','u.export':'匯出…',
+'u.adjust':'調整','u.crop':'裁切','u.remove':'移除','u.search':'搜尋調整項目','u.look':'風格','u.strength':'強度','u.light':'光線','u.color':'色彩','u.effects':'效果','u.toolkit':'工具組（實驗室）','u.nolook':'無風格',
+'c.exposure':'曝光','c.contrast':'對比','c.highlights':'亮部','c.shadows':'陰影','c.whites':'白色','c.blacks':'黑色','c.clarity':'清晰度','c.temp':'色溫','c.sat':'飽和度','c.vignette':'暗角','c.grain':'顆粒',
+'k.sunday':'Sunday','k.harbor':'Harbor','k.peach':'Peach','k.fern':'Fern','k.noir':'Noir',
+'a1':'秋日森林','a2':'湖與群山','a3':'金色海灣','a4':'岩壁山谷','a5':'海岸線','a6':'日出山稜','a7':'秋日湖畔','a8':'夜城','a9':'暖色山丘','a10':'沙丘漫步',
+'chips':'光線|色彩|細節|效果|裁切與角度|記錄與快照|風格與預設集'
+}};
+var lang='en';
+function t(k){var d=I18N[lang];return(d&&d[k]!=null)?d[k]:(I18N.en[k]||k)}
+function nf(n){return n.toLocaleString(lang==='en'?'en-US':'zh-TW')}
+
+/* ---------- helpers for the drawn app ---------- */
+function ph(i){return '<div class="ph"><i style="background-image:var(--u'+(i%US.length)+')"></i></div>'}
+function ring(s,p){
+  var r='<svg class="rg" viewBox="0 0 38 38"><circle cx="19" cy="19" r="19" fill="rgba(20,20,22,.78)"/><g transform="rotate(-90 19 19)"><circle cx="19" cy="19" r="13" fill="none" stroke="#4a4a4e" stroke-width="4"/>';
+  if(p)r+='<circle cx="19" cy="19" r="13" fill="none" stroke="#ff9f0a" stroke-width="4" stroke-dasharray="'+(p*81.7)+' 90" stroke-dashoffset="'+(-s*81.7)+'"/>';
+  if(s)r+='<circle cx="19" cy="19" r="13" fill="none" stroke="#30d158" stroke-width="4" stroke-dasharray="'+(s*81.7)+' 90"/>';
+  return r+'</g></svg>'}
+function barHtml(a){return '<div class="bar">'+a.map(function(x){return '<i class="'+x[0]+'" style="width:'+Math.max(0,x[1])+'%"></i>'}).join('')+'</div>'}
+function sideHtml(sel){
+  var yrs=[['2026',78],['2025',64],['2024',100],['2023',12]];
+  return '<aside class="side"><div class="devc"><small>'+t('u.ready')+'</small><b>Pixel</b><span>'+t('u.free')+'</span></div>'+
+  '<h6><span>'+t('u.libs')+'</span><span>+</span></h6>'+
+  '<div class="sr'+(sel==='all'?' sel':'')+'"><span class="ic">☁</span><div>'+t('u.all')+'<small>'+nf(3402)+t('u.of')+nf(5583)+' '+t('u.backedup')+'</small></div></div>'+
+  '<div class="sr"><span class="ic">♡</span>'+t('u.fav')+'</div>'+
+  '<div class="sr'+(sel==='lib'?' sel':'')+'"><span class="ic">⌄</span>Travel_archive<span class="pc">61%</span></div>'+
+  yrs.map(function(y){return '<div class="sr l2'+(y[0]==='2026'&&sel==='2026'?' sel':'')+'">'+y[0]+'<span class="pc'+(y[1]===100?' g':'')+'">'+y[1]+'%</span></div>'}).join('')+
+  '<div class="sr"><span class="ic">›</span>Phone_imports<span class="pc">9%</span></div>'+
+  '<div class="sr"><span class="ic">›</span>Video_library<span class="pc">0%</span></div>'+
+  '<div style="margin-top:auto"></div><div class="sr" style="color:#a8a8ad"><span class="ic">+</span>'+t('u.add')+'</div></aside>'}
+function tbarHtml(title,sub,tab){
+  return '<div class="tbar"><div class="tl"><i></i><i></i><i></i></div><div class="ib">▯</div><div class="ib">‹</div><div class="ib" style="opacity:.4">›</div><div class="ttl"><b>'+title+'</b><small>'+sub+'</small></div>'+
+  '<div class="seg"><span'+(tab==='lib'?' class="on"':'')+'>'+t('u.library')+'</span><span'+(tab==='dev'?' class="on"':'')+'>'+t('u.develop')+'</span><span class="ico">▯</span><span class="ico">▣</span></div><div class="sp"></div><div class="ibr">⟳</div><div class="ibr">⚙</div></div>'}
+function appOf(id){return document.querySelector('#'+id+' .app')}
+
+/* ----- Mock A: the albums of a year (hero) ----- */
+var ALB=[[1248,92,0,22],[386,100,0,0],[2104,64,21,31],[812,35,40,7],[540,0,0,27],[297,100,0,2],[166,88,0,25],[430,52,18,16],[73,100,0,4],[911,24,30,29]];
+function mockA(){
+  var TOT=0,SAFE=0;ALB.forEach(function(a){TOT+=a[0];SAFE+=a[0]*a[1]/100});
+  var pct=Math.round(SAFE/TOT*100),heat='';
+  for(var x=0;x<24;x++)for(var y=0;y<5;y++){var v=Math.abs(Math.sin(x*12.9+y*78.2)*43758.5)%1;heat+='<i style="'+(v>.3?'background:rgba(120,126,140,'+(.25+.5*v).toFixed(2)+')':'')+'"></i>'}
+  var cards=ALB.map(function(a,i){return '<div class="cd"><div class="cv">'+ph(a[3])+ring(a[1]/100,a[2]/100)+'</div><b>'+t('a'+(i+1))+'</b><small>'+nf(a[0])+' '+t('u.files')+' · '+a[1]+'%</small></div>'}).join('');
+  appOf('mockA').innerHTML=tbarHtml('2026','Travel_archive','lib')+'<div class="body">'+sideHtml('2026')+
+  '<div class="main"><div class="crumb">'+t('u.all')+' › Travel_archive › 2026</div><h4>2026</h4><div class="sub">'+t('u.lastscan')+' · '+nf(TOT)+' '+t('u.files')+'</div>'+
+  '<div class="cov"><div class="row"><b>'+pct+'%</b><span>'+t('u.ingoogle')+'</span><em>'+nf(TOT)+' '+t('u.files')+'</em></div>'+barHtml([['cG',pct],['cO',9],['cB',100-pct-9]])+
+  '<div class="lg"><span><i class="cB"></i>'+t('u.notsent')+'</span><span><i class="cO"></i>'+t('u.onpixel')+'</span><span><i class="cG"></i>'+t('u.done')+'</span></div></div>'+
+  '<div class="heat">'+heat+'</div><div class="lbl">'+t('u.albums')+'</div><div class="cards">'+cards+'</div></div></div>';
+  document.getElementById('stickerPct').textContent=pct+'%';
+}
+
+/* ----- Mock C: overview of all libraries ----- */
+function mockC(){
+  var otd=[[24,'2025',t('u.agoyr')],[5,'2024','2 '+t('u.yrsago')],[18,'2023','3 '+t('u.yrsago')],[32,'2022','4 '+t('u.yrsago')],[1,'2021','5 '+t('u.yrsago')],[20,'2019','7 '+t('u.yrsago')],[28,'2016','10 '+t('u.yrsago')]];
+  var stats=[['u.notsent','900','25.86 GB','#3b6fd0'],['u.onpixel','52','363.5 MB','#ff9f0a'],['u.likely','3','2.6 MB','#8fe3a8'],['u.done','8','103.7 MB','#30d158'],['u.unk','0','0 kB','#6b6b70'],['u.excl','13','848.1 MB','#6b6b70']];
+  var libs=[['Travel_archive',61,12,15369],['Phone_imports',9,4,75228],['Video_library',0,0,1536]];
+  var jobs=[['2026-07-13',0,'0 / 35'],['2026_07_alishan',100,'3 / 3'],['2025-12-13',0,'0 / 11'],['2024-12-17',0,'0 / 562']];
+  appOf('mockC').innerHTML=tbarHtml(t('u.all'),'','lib')+'<div class="body">'+sideHtml('all')+
+  '<div class="main"><h4>'+t('u.all')+'</h4><div class="lbl" style="margin-top:12px">'+t('u.otd')+'</div><div class="otd">'+otd.map(function(o){return '<div><div class="cv">'+ph(o[0])+'</div><b>'+o[1]+'</b><small>'+o[2]+'</small></div>'}).join('')+'</div>'+
+  '<div class="stat">'+stats.map(function(s){return '<div style="--d:'+s[3]+'"><small>'+t(s[0])+'</small><b>'+s[1]+'</b><i>'+s[2]+'</i></div>'}).join('')+'</div>'+
+  '<div class="lbl">'+t('u.libs')+'</div>'+libs.map(function(l){return '<div class="lrow"><div class="t"><b>'+l[0]+'</b><span>'+l[1]+'% '+t('u.ingoogle')+' · '+nf(l[3])+' '+t('u.files')+'</span></div>'+barHtml([['cG',l[1]],['cO',l[2]],['cB',100-l[1]-l[2]]])+'</div>'}).join('')+
+  '<div class="lbl">'+t('u.jobs')+'</div>'+jobs.map(function(j){return '<div class="lrow"><div class="t"><b>'+j[0]+' ›</b><span>'+j[2]+' '+t('u.backedup')+'</span></div>'+barHtml([['cG',j[1]],['cX',100-j[1]]])+'</div>'}).join('')+'</div></div>';
+}
+
+/* ----- Mock D: the photos of an album ----- */
+function mockD(){
+  var tiles='';
+  for(var i=0;i<32;i++){var c=(i*11+3)%35;tiles+='<div class="pt'+(i===9?' on':'')+'">'+ph(c)+'<span class="raw">RAW</span></div>'}
+  appOf('mockD').innerHTML=tbarHtml('Winter_walk','Travel_archive','lib')+'<div class="body">'+sideHtml('lib')+
+  '<div class="main"><div class="crumb">'+t('u.all')+' › Travel_archive › 2026 › Winter_walk</div><div style="display:flex;align-items:flex-end"><h4>Winter_walk</h4><div style="margin-left:auto;display:flex;gap:8px;font-size:10.5px"><span class="ibr" style="background:#2c2c2e;width:auto;padding:0 9px">'+t('u.reveal')+'</span><span class="ibr" style="background:#2c2c2e;width:auto;padding:0 9px">'+t('u.check')+'</span></div></div>'+
+  '<div class="cov"><div class="row"><b>38%</b><span>'+t('u.ingoogle')+'</span><em>256 '+t('u.files')+'</em></div>'+barHtml([['cG',38],['cO',14],['cB',48]])+'</div>'+
+  '<div class="chips2"><span>'+t('u.photos')+' 256</span><span>'+t('u.status')+'</span><span>'+t('u.camera')+'</span></div><div class="pgrid">'+tiles+'</div></div></div>';
+}
+
+/* ---------- film looks: the app's PixelSync Film set, rendered by the PixelSync engine (PD-33) ---------- */
+var FILM={'frost-fuji160c':'img/film/frost-fuji160c.jpg','frost-fuji400h':'img/film/frost-fuji400h.jpg','frost-fuji800z':'img/film/frost-fuji800z.jpg','frost-hp5':'img/film/frost-hp5.jpg','frost-neutral':'img/film/frost-neutral.jpg','frost-portra400':'img/film/frost-portra400.jpg','oval-fuji160c':'img/film/oval-fuji160c.jpg','oval-fuji400h':'img/film/oval-fuji400h.jpg','oval-fuji800z':'img/film/oval-fuji800z.jpg','oval-hp5':'img/film/oval-hp5.jpg','oval-neutral':'img/film/oval-neutral.jpg','oval-portra400':'img/film/oval-portra400.jpg','paris-fuji160c':'img/film/paris-fuji160c.jpg','paris-fuji400h':'img/film/paris-fuji400h.jpg','paris-fuji800z':'img/film/paris-fuji800z.jpg','paris-hp5':'img/film/paris-hp5.jpg','paris-neutral':'img/film/paris-neutral.jpg','paris-portra400':'img/film/paris-portra400.jpg','valley-fuji160c':'img/film/valley-fuji160c.jpg','valley-fuji400h':'img/film/valley-fuji400h.jpg','valley-fuji800z':'img/film/valley-fuji800z.jpg','valley-hp5':'img/film/valley-hp5.jpg','valley-neutral':'img/film/valley-neutral.jpg','valley-portra400':'img/film/valley-portra400.jpg'};
+function film(photo,look){return FILM[photo+'-'+look]}
+function clamp(x,lo,hi){return x<lo?lo:x>hi?hi:x}
+var LOOKS=[
+ {id:'portra400',name:'Kodak Portra 400',mk:'KODAK',nm:'PORTRA',foot:'400'},
+ {id:'fuji160c',name:'Fuji 160C',mk:'FUJIFILM',nm:'PRO 160C',foot:'160'},
+ {id:'fuji400h',name:'Fuji 400H',mk:'FUJIFILM',nm:'PRO 400H',foot:'400'},
+ {id:'fuji800z',name:'Fuji 800Z',mk:'FUJIFILM',nm:'PRO 800Z',foot:'800'},
+ {id:'hp5',name:'Ilford HP5',mk:'ILFORD',nm:'HP5',foot:'400'}];
+function lookOf(id){return LOOKS.filter(function(l){return l.id===id})[0]}
+var BADGE={'fuji160c':'img/badges/fuji160c.png','fuji400h':'img/badges/fuji400h.png','fuji800z':'img/badges/fuji800z.png','hp5':'img/badges/hp5.png','portra400':'img/badges/portra400.png'};
+function fb(L){return '<img class="fbi" alt="" src="'+BADGE[L.id]+'">'}
+var SL=[['light','exposure',-2,2,function(v){return(v>0?'+':'')+v.toFixed(2)}],['light','contrast',-100,100],['light','highlights',-100,100],['light','shadows',-100,100],['light','whites',-100,100],['light','blacks',-100,100],['light','clarity',-100,100],
+        ['color','temp',-100,100,function(){return nf(5600)+' K'}],['color','sat',-100,100],['effects','vignette',0,100],['effects','grain',0,100]];
+var activeLook='portra400',holding=false,imgs={};
+function loadImg(src,cb){var i=imgs[src];if(i){if(i.complete)cb(i);else i.addEventListener('load',function(){cb(i)});return}
+  i=new Image();imgs[src]=i;i.onload=function(){cb(i)};i.src=src}
+function sliderRows(group){return SL.filter(function(x){return x[0]===group}).map(function(x){
+  return '<div class="sl"><span>'+t('c.'+x[1])+'</span><div class="tr"><i style="left:'+((0-x[2])/(x[3]-x[2])*100)+'%"></i></div><b>'+(x[4]?x[4](0):'0')+'</b></div>'}).join('')}
+function mockB(){
+  var A=appOf('mockB');
+  var lk=LOOKS.map(function(L){return '<button type="button" class="bw" data-look="'+L.id+'" aria-pressed="'+(L.id===activeLook)+'">'+fb(L)+'<span class="nmm">'+L.name+'</span></button>'}).join('');
+  var thumbs='';[0,3,6,8,10,1,2,4,12,9,5,7,11,13].forEach(function(c,i){thumbs+='<div class="ft'+(i===0?' on':'')+'">'+(i===0?'<div class="ph"><i style="background-image:var(--img-frost)"></i></div>':ph(c*2+i))+'<span class="raw">RAW</span></div>'});
+  A.innerHTML=tbarHtml('DSC00321','Travel_archive','dev')+
+  '<div class="dtool"><div class="nm"><b>DSC00321</b><small>Travel_archive</small></div><div class="mid"><span class="ba" id="baBtn">'+t('u.ba')+'</span><span>'+t('u.split')+'</span><span>'+t('u.ref')+'</span><span class="sep"></span><span>'+t('u.oor')+'</span><span>'+t('u.fit')+'</span><span>'+t('u.sur')+' ▾</span><span>'+t('u.full')+'</span></div>'+
+  '<div class="r"><span>'+t('u.reset')+'</span><span style="color:#e6e6e9">'+t('u.asy')+'<i class="tg"></i></span><span class="ex">'+t('u.export')+'</span></div></div>'+
+  '<div class="dev3"><div class="lpane"><h6>PixelSync Film 01 <span style="color:#6f6f75;font-weight:400">5</span></h6><div class="bgrid" id="bg">'+lk+'<button type="button" class="bw" data-look="neutral" aria-pressed="false"><div class="bd none"><div class="m">'+t('u.nolook')+'</div></div><span class="nmm">'+t('u.nolook')+'</span></button></div></div>'+
+  '<div class="cstage"><canvas id="devC" width="1300" height="867"></canvas><small>'+t('u.fit')+'</small></div>'+
+  '<div class="rpane"><div class="tabs"><span class="on">'+t('u.adjust')+'</span><span>'+t('u.crop')+'</span><span>'+t('u.remove')+'</span></div><canvas class="hst" id="hst" width="536" height="156"></canvas><div class="srch">⌕ '+t('u.search')+'</div>'+
+  '<div class="sect">'+t('u.look')+'</div><div class="lkcur" id="lkcur"></div>'+
+  '<div class="sect">'+t('u.light')+'</div>'+sliderRows('light')+'<div class="sect">'+t('u.color')+'</div>'+sliderRows('color')+'<div class="sect">'+t('u.effects')+'</div>'+sliderRows('effects')+'</div></div>'+
+  '<div class="film2">'+thumbs+'</div>';
+  A.querySelectorAll('.bw').forEach(function(b){b.addEventListener('click',function(){activeLook=b.getAttribute('data-look');updateUI();drawLook()})});
+  var ba=A.querySelector('#baBtn');
+  function on(){holding=true;ba.classList.add('hold');drawLook()}function off(){holding=false;ba.classList.remove('hold');drawLook()}
+  ba.addEventListener('pointerdown',on);ba.addEventListener('pointerup',off);ba.addEventListener('pointerleave',off);ba.addEventListener('pointercancel',off);
+  updateUI();drawLook();
+}
+function updateUI(){
+  var A=appOf('mockB');if(!A)return;
+  A.querySelectorAll('.bw').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-look')===activeLook))});
+  var L=lookOf(activeLook),cur=A.querySelector('#lkcur');
+  cur.innerHTML=L?fb(L)+'<span>'+L.name+'<br>'+t('u.strength')+' 100%</span>':'<span>'+t('u.nolook')+'</span>';
+}
+function drawLook(){
+  var c=document.getElementById('devC');if(!c)return;
+  loadImg(film('frost',holding?'neutral':activeLook),function(im){var x=c.getContext('2d');c.width=im.naturalWidth;c.height=im.naturalHeight;x.drawImage(im,0,0);try{hist(x.getImageData(0,0,c.width,c.height))}catch(e){}})}
+function hist(d){
+  var h=document.getElementById('hst');if(!h)return;var x=h.getContext('2d'),W=h.width,H=h.height,bins=[new Float32Array(64),new Float32Array(64),new Float32Array(64)],a=d.data;
+  for(var i=0;i<a.length;i+=16){bins[0][a[i]>>2]++;bins[1][a[i+1]>>2]++;bins[2][a[i+2]>>2]++}
+  var mx=0;bins.forEach(function(b){for(var k=1;k<63;k++)if(b[k]>mx)mx=b[k]});
+  x.clearRect(0,0,W,H);x.globalCompositeOperation='lighter';
+  ['rgba(255,70,60,.8)','rgba(60,220,110,.8)','rgba(70,130,255,.85)'].forEach(function(col,ci){x.fillStyle=col;
+    for(var k=0;k<64;k++){var bh=Math.min(1,bins[ci][k]/mx)*(H-14);x.fillRect(k*W/64,H-bh,W/64+1,bh)}});
+  x.globalCompositeOperation='source-over'}
+
+/* ---------- full-size detail slider: the PO's photos, PixelSync engine renders (PD-33) ---------- */
+var XP=[{k:'frost',w:1300,h:867},{k:'valley',w:1300,h:867},{k:'oval',w:867,h:1300},{k:'paris',w:867,h:1300}];
+var xi=0,xlook='portra400',xpos=50;
+function xsize(p){var maxH=Math.min(660,window.innerHeight*0.8),W=document.getElementById('xstage').clientWidth,h=Math.min(maxH,W*p.h/p.w),w=h*p.w/p.h;if(w>W){w=W;h=W*p.h/p.w}return [Math.round(w),Math.round(h)]}
+function xrender(){
+  var p=XP[xi],box=document.getElementById('xph'),sz=xsize(p);
+  box.style.width=sz[0]+'px';box.style.height=sz[1]+'px';
+  document.getElementById('xo').style.backgroundImage='url('+film(p.k,'neutral')+')';
+  document.getElementById('xd').style.backgroundImage='url('+film(p.k,xlook)+')';
+  document.getElementById('lblA').textContent=t('u.nolook');document.getElementById('lblB').textContent=lookOf(xlook).name}
+function xchips(){
+  var box=document.getElementById('xchips');
+  box.innerHTML=XP.map(function(p,i){return '<button type="button" data-i="'+i+'" aria-pressed="'+(i===xi)+'"><i style="background-image:url('+film(p.k,'neutral')+')"></i>'+t('x.p'+(i+1))+'</button>'}).join('');
+  box.querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){xi=+b.getAttribute('data-i');xchips();xrender();xset(50)})});
+  var lb=document.getElementById('xlooks');
+  lb.innerHTML=LOOKS.map(function(L){return '<button type="button" class="xlk" data-look="'+L.id+'" aria-pressed="'+(L.id===xlook)+'">'+fb(L)+'<span>'+L.name+'</span></button>'}).join('');
+  lb.querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){xlook=b.getAttribute('data-look');xchips();xrender()})})}
+function xset(v){xpos=clamp(v,2,98);document.getElementById('xd').style.clipPath='inset(0 0 0 '+xpos+'%)';var h=document.getElementById('xh');h.style.left=xpos+'%';h.setAttribute('aria-valuenow',Math.round(xpos))}
+(function(){var box=document.getElementById('xph'),drag=false;
+  function mv(e){var r=box.getBoundingClientRect();xset((e.clientX-r.left)/r.width*100)}
+  box.addEventListener('pointerdown',function(e){drag=true;box.setPointerCapture(e.pointerId);mv(e)});
+  box.addEventListener('pointermove',function(e){if(drag)mv(e)});
+  box.addEventListener('pointerup',function(){drag=false});box.addEventListener('pointercancel',function(){drag=false});
+  document.getElementById('xh').addEventListener('keydown',function(e){if(e.key==='ArrowLeft'){xset(xpos-4);e.preventDefault()}if(e.key==='ArrowRight'){xset(xpos+4);e.preventDefault()}})})();
+window.addEventListener('resize',function(){xrender()});
+
+/* ---------- scale each drawn view to its box ---------- */
+function fit(){document.querySelectorAll('.mock').forEach(function(m){
+  var w=+m.getAttribute('data-w'),h=+m.getAttribute('data-h'),s=m.clientWidth/w,a=m.firstElementChild;
+  a.style.width=w+'px';a.style.height=h+'px';a.style.transform='scale('+s+')';m.style.height=(h*s)+'px'})}
+window.addEventListener('resize',fit);
+
+/* ---------- language ---------- */
+function applyLang(){
+  root.lang=lang;
+  document.querySelectorAll('[data-i18n]').forEach(function(e){e.textContent=t(e.getAttribute('data-i18n'))});
+  document.querySelectorAll('[data-i18n-html]').forEach(function(e){e.innerHTML=t(e.getAttribute('data-i18n-html'))});
+  document.querySelectorAll('.lang button').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-lang')===lang))});
+  document.title=lang==='en'?'PixelSync for Mac':'PixelSync for Mac｜Mac 照片軟體';
+  document.getElementById('chips').innerHTML=t('chips').split('|').map(function(i){return '<span>'+i+'</span>'}).join('');
+  mockA();mockB();mockC();mockD();xchips();xrender();fit()}
+document.querySelectorAll('.lang button').forEach(function(b){b.addEventListener('click',function(){lang=b.getAttribute('data-lang');try{localStorage.setItem('ps-lang',lang)}catch(e){}applyLang()})});
+var dl=document.getElementById('dlMain');dl.href=DMG_URL;dl.target='_blank';dl.rel='noopener';
+try{var sv=localStorage.getItem('ps-lang');if(sv&&I18N[sv])lang=sv;else if((navigator.language||'').toLowerCase().indexOf('zh')===0)lang='zh-Hant'}catch(e){}
+applyLang();xset(50);
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
+})();
+</script>
+</body>
+</html>
