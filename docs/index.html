@@ -443,6 +443,7 @@ footer .wrap{display:flex;flex-direction:column;gap:8px}
           <li data-i18n="b.t1">t1</li>
           <li data-i18n="b.t2">t2</li>
           <li data-i18n="b.t3">t3</li>
+          <li data-i18n="b.t4">t4</li>
         </ul>
       </div>
       <div class="mock" id="mockC" data-w="980" data-h="600" role="img" aria-label="PixelSync overview of all libraries and their backup status"><div class="app"></div></div>
@@ -506,13 +507,13 @@ footer .wrap{display:flex;flex-direction:column;gap:8px}
   <div class="wrap">
     <div class="get">
       <div style="display:flex;flex-direction:column;gap:22px">
-        <div class="tag" style="--c:var(--ink)" data-i18n="g.tag">PixelSync 1.8.0</div>
+        <div class="tag" style="--c:var(--ink)" data-i18n="g.tag">PixelSync 1.9.0</div>
         <h2 data-i18n="g.h2">Try it on your own photos.</h2>
         <div><a class="btn" id="dlMain" href="#download" data-i18n="cta">Download for Mac</a></div>
       </div>
       <div>
-        <div class="meta"><span data-i18n="m1">macOS 14 or later</span><br><span data-i18n="m2">Apple silicon and Intel</span><br>PixelSync-1.8.0.dmg · 27 MB</div>
-        <p class="sha">SHA-256 dc50cd0bcacb7f021c1747255b2837680d4f1277e4cebb1d8c103c79d7772867</p>
+        <div class="meta"><span data-i18n="m1">macOS 14 or later</span><br><span data-i18n="m2">Apple silicon and Intel</span><br>PixelSync-1.9.0.dmg · 28 MB</div>
+        <p class="sha">SHA-256 4a25eac985d8379bc58edc66ec808bb48b82b1335f89f9a09942ec2b0af06e24</p>
       </div>
     </div>
     <div class="how">
@@ -535,7 +536,7 @@ footer .wrap{display:flex;flex-direction:column;gap:8px}
 </section>
 </main>
 
-<div class="film" aria-hidden="true"><span>PixelSync · 1.8.0 · 24 · 25</span></div>
+<div class="film" aria-hidden="true"><span>PixelSync · 1.9.0 · 24 · 25</span></div>
 <footer>
   <div class="wrap">
     <div data-i18n="ft1">PixelSync is an independent project.</div>
@@ -548,7 +549,7 @@ footer .wrap{display:flex;flex-direction:column;gap:8px}
 'use strict';
 /* ====== Download link: change this one line to point at the hosted DMG ====== */
 var DMG_URL='https://github.com/MaxCSHan/pixelsync-releases/releases/latest/download/PixelSync.dmg';
-/* the photos are inlined by site/build.py; they are not in git (PD-33) */
+/* the photos are inlined by site/build.py; they are not in git (PD-34) */
 var IMG={frost:'img/frost.jpg'};
 var root=document.documentElement;
 var US=['img/u/00.jpg','img/u/01.jpg','img/u/02.jpg','img/u/03.jpg','img/u/04.jpg','img/u/05.jpg','img/u/06.jpg','img/u/07.jpg','img/u/08.jpg','img/u/09.jpg','img/u/10.jpg','img/u/11.jpg','img/u/12.jpg','img/u/13.jpg','img/u/14.jpg','img/u/15.jpg','img/u/16.jpg','img/u/17.jpg','img/u/18.jpg','img/u/19.jpg','img/u/20.jpg','img/u/21.jpg','img/u/22.jpg','img/u/23.jpg','img/u/24.jpg','img/u/25.jpg','img/u/26.jpg','img/u/27.jpg','img/u/28.jpg','img/u/29.jpg','img/u/30.jpg','img/u/31.jpg','img/u/32.jpg','img/u/33.jpg','img/u/34.jpg'];
@@ -568,35 +569,35 @@ en:{
 's0.tag':'Why we built it','s0.p':'PixelSync began as one photographer\'s fix: a calm way to send a huge library to an old Pixel for free Google Photos backup, and to finally see what had made it. It grew into a whole home for the photos: browse them, develop them, and trust them.',
 'wf.tag':'The whole workflow','wf.h2':'From the camera to the cloud, in one place.','wf.lead':'Every stage of a photo\'s life, side by side. Some are ready today. The rest are coming, and we say which is which.',
 'wf1.h':'Import','wf1.p':'Bring in cards, iPhone and folders. They land in the right album, dated and named your way.',
-'wf2.h':'Organize','wf2.p':'Browse every library as albums, years and a calendar. Photos and video clips together, even with the drive unplugged.',
+'wf2.h':'Organize','wf2.p':'Browse every library as albums and years, with a heatmap of each year. Photos and video clips together, even with the drive unplugged.',
 'wf3.h':'Clean up','wf3.p':'Find exact and similar duplicates, compare them side by side, and remove the extras safely.',
 'wf4.h':'Develop','wf4.p':'Develop RAW files and dress them in film-style looks. Edits save as you work.',
-'wf5.h':'Back up','wf5.p':'Sync to your phone, track what reached Google Photos, and undo anything.',
-'now':'Available now','soon':'Coming','wf.note':'Next after that: ratings, keywords and search, so you can find the photo you want in seconds.',
+'wf5.h':'Back up','wf5.p':'Sync a whole album, or a batch that fits your phone, track what reached Google Photos, and undo anything.',
+'now':'Available now','soon':'Coming','wf.note':'Next after that: keywords, captions and search, so you can find the photo you want in seconds.',
 'd.tag':'Develop','d.h2':'Give every photo a look.','d.lead':'Develop RAW files with light, color, detail and crop tools, then dress them in a film-style look with one click. Every look wears its own little badge.',
 'd.t1':'Edits save as you work. There is no Save button.','d.t2':'Copy one photo\'s settings to a whole set, so a shoot stays consistent.','d.t3':'Your original file is never touched.',
 'd.hint':'Pick a film look on the left. Hold Before · After to see the photo without it. The photo is one of ours, and every look is rendered by PixelSync.',
 'b.tag':'Back up','b.h2':'See what\'s safe at a glance.','b.lead':'Every library and album shows how much of it is safely in Google Photos, how much is waiting on your phone, and how much lives only on your Mac. No guessing.',
-'b.t1':'Send photos to your phone over USB with live progress, then a re-count to verify they arrived.','b.t2':'When PixelSync has to infer a backup, it says “likely” and lets you confirm.','b.t3':'Undo a sync. Every file left out shows you why.',
-'c.tag':'Organize','c.h2':'Your folders, exactly as you keep them.','c.lead':'PixelSync reads your library and never writes to it. Albums, years and drives stay the way you organised them, and everything keeps working when the drive is unplugged.',
-'c.s1':'photos, opening in about half a second','c.s2':'files changed in your library',
+'b.t1':'Send photos to your phone over USB with live progress, then a re-count to verify they arrived and a check that Android has indexed them for Google Photos.','b.t4':'Sync one album in a click, or pick albums in date order and fit them to your phone\'s free space.','b.t2':'When PixelSync has to infer a backup, it says “likely” and lets you confirm.','b.t3':'Undo a sync. Every file left out shows you why.',
+'c.tag':'Organize','c.h2':'Your folders, exactly as you keep them.','c.lead':'PixelSync reads your library and never writes to it. Albums, years and drives stay the way you organised them, and everything keeps working when the drive is unplugged. Rate with stars and ♥, and flag picks and rejects, from the keyboard.',
+'c.s1':'photos in our test library, opening in about half a second','c.s2':'files changed in your library',
 'f.tag':'Protect','f.h2':'Nothing leaves without proof.','f.lead':'Freeing up space on your phone is scary when you\'re not sure the originals are safe. PixelSync follows one rule, every time.',
-'f.t1':'Your own work (favorites, edits, history) gets verified daily, weekly and monthly backups.','f.t2':'Add a second disk for an extra copy.',
+'f.t1':'Your own work (favorites, ratings, edits, history) gets verified daily, weekly and monthly backups.','f.t2':'Add a second disk for an extra copy.',
 'f.r1.h':'Rule 1','f.r1.q':'A verified copy is on your Mac.','f.r1.a':'→ Deleted from the phone','f.r2.h':'Rule 2','f.r2.q':'No copy found on your Mac.','f.r2.a':'→ Moved to the PixelSync Trash. Put Back is always there.',
 'w.tag':'Who it\'s for','w.h2':'Made for people who make and keep images.',
 'w1.h':'Photographers','w1.p':'You shoot RAW and keep years of folders on drives. You want to find anything, develop it well, and never wonder what\'s backed up.','w1.a':'Library','w1.b':'Develop','w1.c':'Backup',
 'w2.h':'Designers','w2.p':'You live by color and consistency. You want looks you can apply across a whole set, and a library that is just your own folders.','w2.a':'Looks','w2.b':'Copy settings','w2.c':'Plain folders',
 'w3.h':'Creators','w3.p':'You shoot stills and video clips and keep making more. You want everything in one place, and backed up without the effort.','w3.a':'Photos and video','w3.b':'Phone sync','w3.c':'Offline',
-'g.tag':'PixelSync 1.8.0','g.h2':'Try it on your own photos.',
+'g.tag':'PixelSync 1.9.0','g.h2':'Try it on your own photos.',
 'i1.h':'Install','i1.1':'Open the DMG and drag <b>PixelSync.app</b> to Applications.','i1.2':'The first launch is blocked by macOS, because the app has no Apple Developer ID. Open <b>System Settings › Privacy &amp; Security</b> and click <b>Open Anyway</b>.','i1.3':'Later launches go straight through.',
-'i2.h':'Upgrading from an earlier version?','i2.1':'1.8.0 upgrades your data, and older builds then open it read-only.','i2.2':'Quit PixelSync and copy <code>~/Library/Application Support/PixelSync/</code> to a dated folder first. That copy is your way back.',
+'i2.h':'Upgrading from an earlier version?','i2.1':'1.9.0 upgrades your data, and older builds then open it read-only.','i2.2':'Quit PixelSync and copy <code>~/Library/Application Support/PixelSync/</code> to a dated folder first. That copy is your way back.',
 'i3.h':'To sync a phone','i3.1':'On the phone: Settings › About phone, tap Build number 7 times.','i3.2':'Settings › Developer options › turn on USB debugging.','i3.3':'Connect over USB and tap Allow on the phone.',
-'q0.q':'Which parts can I use today?','q0.a':'Organizing libraries, developing RAW files with looks, and backing up through a phone are ready now. Importing from cards, finding duplicates, and ratings and keywords are on the way.',
+'q0.q':'Which parts can I use today?','q0.a':'Organizing libraries, rating photos, developing RAW files with looks, and backing up through a phone are ready now. Importing from cards, finding duplicates, and keywords and search are on the way.',
 'q1.q':'Do I need a Pixel?','q1.a':'No. The library and Develop need no phone at all. Sync works with any Android phone whose photos live under /sdcard/DCIM/. An old Pixel is what makes the original-quality Google Photos backup free.',
 'q2.q':'Will it change my original photos?','q2.a':'No. Library folders are read-only for PixelSync. Edits are stored in PixelSync\'s own database, and exports go to a folder you choose outside your libraries.',
 'q3.q':'What can I develop today?','q3.a':'RAW files, with light, color, detail, effects and crop. Editing JPEG and HEIC, masks and lens corrections are on the way.',
 'q4.q':'Does it send my photos anywhere?','q4.a':'Only to the phone you plug in. PixelSync has no account and no cloud service, and your data stays on your Mac.',
-'q5.q':'Why does macOS warn me when I open it?','q5.a':'The app is ad-hoc signed and not notarized, so macOS asks you to approve it once. You can check the download against the SHA-256 above with <code>shasum -a 256 PixelSync-1.8.0.dmg</code>.',
+'q5.q':'Why does macOS warn me when I open it?','q5.a':'The app is ad-hoc signed and not notarized, so macOS asks you to approve it once. You can check the download against the SHA-256 above with <code>shasum -a 256 PixelSync-1.9.0.dmg</code>.',
 'ft1':'PixelSync is an independent project.','ft2':'Google Photos and Pixel are trademarks of Google. PixelSync is not affiliated with or endorsed by Google. The app views on this page use sample data. Photos in the grids are from Unsplash.',
 /* app UI strings, as in the app */
 'x.tag':'Detail','x.h2':'See every detail.','x.lead':'Drag the handle. The same RAW file, with and without a film look, at full size. Rendered by PixelSync.','x.p1':'Snow','x.p2':'Valley','x.p3':'Mirror','x.p4':'Night','x.look':'Look',
@@ -621,35 +622,35 @@ en:{
 's0.tag':'為什麼做它','s0.p':'PixelSync 起初只是一位攝影師的解法：用安心的方式，把龐大的圖庫送到舊 Pixel 上，享受免費的 Google 相簿備份，並且終於能看到哪些真的備份成功。後來它長成照片的完整家：瀏覽、沖印，而且可以信任。',
 'wf.tag':'完整的工作流程','wf.h2':'從相機到雲端，一個地方就夠。','wf.lead':'一張照片一生的每個階段，並排在這裡。有些今天就能用，其他的即將推出，我們會清楚標明。',
 'wf1.h':'匯入','wf1.p':'匯入記憶卡、iPhone 與資料夾。照片會落在對的相簿，依你的方式命名與分日期。',
-'wf2.h':'整理','wf2.p':'用相簿、年份與日曆瀏覽每座圖庫。照片與影片一起看，硬碟拔掉也行。',
+'wf2.h':'整理','wf2.p':'用相簿與年份瀏覽每座圖庫，每一年還有一張熱度圖。照片與影片一起看，硬碟拔掉也行。',
 'wf3.h':'清理','wf3.p':'找出完全相同與相似的重複照片，並排比較，安全地移除多餘的。',
 'wf4.h':'沖印','wf4.p':'沖印 RAW 檔，並套上底片風格。調整會在你操作時自動儲存。',
-'wf5.h':'備份','wf5.p':'同步到手機、追蹤哪些已到 Google 相簿，並且隨時可以復原。',
-'now':'現在可用','soon':'即將推出','wf.note':'再接下來：評等、關鍵字與搜尋，讓你幾秒內找到想要的照片。',
+'wf5.h':'備份','wf5.p':'同步整本相簿，或剛好放得進手機的一批、追蹤哪些已到 Google 相簿，並且隨時可以復原。',
+'now':'現在可用','soon':'即將推出','wf.note':'再接下來：關鍵字、說明文字與搜尋，讓你幾秒內找到想要的照片。',
 'd.tag':'沖印','d.h2':'讓每張照片都有自己的風格。','d.lead':'用光線、色彩、細節與裁切工具沖印 RAW 檔，再一鍵套上底片風格。每種風格都有自己的小徽章。',
 'd.t1':'調整會在你操作時自動儲存，沒有「儲存」按鈕。','d.t2':'把一張照片的設定拷貝到整組照片，讓整次拍攝保持一致。','d.t3':'你的原始檔絕不會被更動。',
 'd.hint':'在左邊選一個底片風格。按住「前後對比」可以看沒有套用風格的照片。照片是我們自己的，每種風格都由 PixelSync 沖印。',
 'b.tag':'備份','b.h2':'一眼看出哪些是安全的。','b.lead':'每座圖庫與每本相簿都會顯示：有多少已安全在 Google 相簿、有多少還在手機上等待、有多少只存在你的 Mac。不用再猜。',
-'b.t1':'用 USB 把照片傳到手機，即時顯示進度，並在最後重新計數確認都到了。','b.t2':'當 PixelSync 只能推斷已備份時，會說「可能」，讓你自己確認。','b.t3':'可以復原同步。每個被排除的檔案都會告訴你原因。',
-'c.tag':'整理','c.h2':'你的資料夾，維持你整理的樣子。','c.lead':'PixelSync 只讀取你的圖庫，從不寫入。相簿、年份與硬碟都維持你原本的整理方式，硬碟拔掉時也能繼續瀏覽。',
-'c.s1':'張照片，約半秒就能開啟','c.s2':'個檔案被更動',
+'b.t1':'用 USB 把照片傳到手機，即時顯示進度，並在最後重新計數確認都到了，再檢查 Android 已替它們建立索引，Google 相簿才看得到。','b.t4':'一鍵同步單一相簿，或依日期挑選多本相簿，再調整到剛好放得進手機的剩餘空間。','b.t2':'當 PixelSync 只能推斷已備份時，會說「可能」，讓你自己確認。','b.t3':'可以復原同步。每個被排除的檔案都會告訴你原因。',
+'c.tag':'整理','c.h2':'你的資料夾，維持你整理的樣子。','c.lead':'PixelSync 只讀取你的圖庫，從不寫入。相簿、年份與硬碟都維持你原本的整理方式，硬碟拔掉時也能繼續瀏覽。用鍵盤就能打星等與 ♥，並標記精選或淘汰。',
+'c.s1':'張照片的測試圖庫，約半秒就能開啟','c.s2':'個檔案被更動',
 'f.tag':'守護','f.h2':'沒有證明，就不會離開。','f.lead':'不確定原始檔安不安全時，釋出手機空間讓人害怕。PixelSync 每一次都遵守同一條規則。',
-'f.t1':'你自己的成果（喜好項目、調整、記錄）有每日、每週、每月的已驗證備份。','f.t2':'還可以加一顆第二硬碟，多一份副本。',
+'f.t1':'你自己的成果（喜好項目、評等、調整、記錄）有每日、每週、每月的已驗證備份。','f.t2':'還可以加一顆第二硬碟，多一份副本。',
 'f.r1.h':'規則 1','f.r1.q':'Mac 上有已驗證的副本。','f.r1.a':'→ 從手機刪除','f.r2.h':'規則 2','f.r2.q':'Mac 上找不到副本。','f.r2.a':'→ 移到 PixelSync 垃圾桶。隨時可以放回。',
 'w.tag':'適合誰','w.h2':'為創作影像、也珍藏影像的人而做。',
 'w1.h':'攝影師','w1.p':'你拍 RAW，多年的資料夾放在硬碟裡。你想找得到任何一張、沖印得漂亮，而且不用再猜哪些已備份。','w1.a':'圖庫','w1.b':'沖印','w1.c':'備份',
 'w2.h':'設計師','w2.p':'你靠色彩與一致性吃飯。你想把風格套用到整組照片，而且圖庫就是你自己的資料夾。','w2.a':'風格','w2.b':'拷貝設定','w2.c':'單純資料夾',
 'w3.h':'創作者','w3.p':'你拍照也拍影片，而且一直在產出。你想把一切放在同一處，不費力地完成備份。','w3.a':'照片與影片','w3.b':'手機同步','w3.c':'離線',
-'g.tag':'PixelSync 1.8.0','g.h2':'拿你自己的照片試試看。',
+'g.tag':'PixelSync 1.9.0','g.h2':'拿你自己的照片試試看。',
 'i1.h':'安裝','i1.1':'開啟 DMG，把 <b>PixelSync.app</b> 拖到「應用程式」。','i1.2':'第一次開啟會被 macOS 擋下，因為這個 App 沒有 Apple 開發者 ID。請開啟<b>系統設定 › 隱私權與安全性</b>，點選<b>強制打開</b>。','i1.3':'之後開啟就不會再被擋。',
-'i2.h':'從舊版升級？','i2.1':'1.8.0 會升級你的資料，之後舊版只能以唯讀方式開啟。','i2.2':'請先結束 PixelSync，把 <code>~/Library/Application Support/PixelSync/</code> 複製到一個標有日期的資料夾。那份複本就是你的退路。',
+'i2.h':'從舊版升級？','i2.1':'1.9.0 會升級你的資料，之後舊版只能以唯讀方式開啟。','i2.2':'請先結束 PixelSync，把 <code>~/Library/Application Support/PixelSync/</code> 複製到一個標有日期的資料夾。那份複本就是你的退路。',
 'i3.h':'同步手機','i3.1':'在手機上：設定 › 關於手機，連點「版本號碼」7 次。','i3.2':'設定 › 開發人員選項 › 開啟 USB 偵錯。','i3.3':'用 USB 連接，並在手機上點「允許」。',
-'q0.q':'現在哪些功能可以用？','q0.a':'整理圖庫、沖印 RAW 檔並套用風格，以及透過手機備份，現在都可以用。從記憶卡匯入、找出重複照片，以及評等與關鍵字即將推出。',
+'q0.q':'現在哪些功能可以用？','q0.a':'整理圖庫、為照片評等、沖印 RAW 檔並套用風格，以及透過手機備份，現在都可以用。從記憶卡匯入、找出重複照片，以及關鍵字與搜尋即將推出。',
 'q1.q':'一定要有 Pixel 嗎？','q1.a':'不用。圖庫與沖印完全不需要手機。同步適用於任何照片放在 /sdcard/DCIM/ 的 Android 手機。舊 Pixel 則能讓原始畫質的 Google 相簿備份免費。',
 'q2.q':'它會更動我的原始照片嗎？','q2.a':'不會。圖庫資料夾對 PixelSync 是唯讀的。調整存放在 PixelSync 自己的資料庫，匯出則放到你在圖庫以外選的資料夾。',
 'q3.q':'現在可以沖印什麼？','q3.a':'RAW 檔，包含光線、色彩、細節、效果與裁切。JPEG 與 HEIC 的調整、遮色片與鏡頭校正即將推出。',
 'q4.q':'它會把我的照片傳到別的地方嗎？','q4.a':'只會傳到你插上的那支手機。PixelSync 沒有帳號，也沒有雲端服務，你的資料都留在 Mac 上。',
-'q5.q':'為什麼開啟時 macOS 會警告？','q5.a':'這個 App 使用臨時簽章，沒有經過公證，所以 macOS 會請你核准一次。你可以用 <code>shasum -a 256 PixelSync-1.8.0.dmg</code> 對照上方的 SHA-256 檢查下載檔。',
+'q5.q':'為什麼開啟時 macOS 會警告？','q5.a':'這個 App 使用臨時簽章，沒有經過公證，所以 macOS 會請你核准一次。你可以用 <code>shasum -a 256 PixelSync-1.9.0.dmg</code> 對照上方的 SHA-256 檢查下載檔。',
 'ft1':'PixelSync 是獨立專案。','ft2':'Google 相簿與 Pixel 是 Google 的商標。PixelSync 與 Google 沒有隸屬或背書關係。本頁的 App 畫面使用範例資料，縮圖相簿中的照片來自 Unsplash。',
 'x.tag':'細節','x.h2':'每個細節，都看得見。','x.lead':'拖動滑桿，看同一個 RAW 檔有沒有套上底片風格，以完整尺寸呈現，由 PixelSync 沖印。','x.p1':'雪地','x.p2':'山谷','x.p3':'鏡面','x.p4':'夜景','x.look':'風格',
 'u.library':'圖庫','u.develop':'沖印','u.ready':'已就緒','u.free':'可用 100.28 GB / 共 120.17 GB','u.libs':'圖庫','u.all':'所有圖庫','u.of':' / ','u.add':'新增來源','u.fav':'喜好項目',
@@ -727,7 +728,7 @@ function mockD(){
   '<div class="chips2"><span>'+t('u.photos')+' 256</span><span>'+t('u.status')+'</span><span>'+t('u.camera')+'</span></div><div class="pgrid">'+tiles+'</div></div></div>';
 }
 
-/* ---------- film looks: the app's PixelSync Film set, rendered by the PixelSync engine (PD-33) ---------- */
+/* ---------- film looks: the app's PixelSync Film set, rendered by the PixelSync engine (PD-34) ---------- */
 var FILM={'frost-fuji160c':'img/film/frost-fuji160c.jpg','frost-fuji400h':'img/film/frost-fuji400h.jpg','frost-fuji800z':'img/film/frost-fuji800z.jpg','frost-hp5':'img/film/frost-hp5.jpg','frost-neutral':'img/film/frost-neutral.jpg','frost-portra400':'img/film/frost-portra400.jpg','oval-fuji160c':'img/film/oval-fuji160c.jpg','oval-fuji400h':'img/film/oval-fuji400h.jpg','oval-fuji800z':'img/film/oval-fuji800z.jpg','oval-hp5':'img/film/oval-hp5.jpg','oval-neutral':'img/film/oval-neutral.jpg','oval-portra400':'img/film/oval-portra400.jpg','paris-fuji160c':'img/film/paris-fuji160c.jpg','paris-fuji400h':'img/film/paris-fuji400h.jpg','paris-fuji800z':'img/film/paris-fuji800z.jpg','paris-hp5':'img/film/paris-hp5.jpg','paris-neutral':'img/film/paris-neutral.jpg','paris-portra400':'img/film/paris-portra400.jpg','valley-fuji160c':'img/film/valley-fuji160c.jpg','valley-fuji400h':'img/film/valley-fuji400h.jpg','valley-fuji800z':'img/film/valley-fuji800z.jpg','valley-hp5':'img/film/valley-hp5.jpg','valley-neutral':'img/film/valley-neutral.jpg','valley-portra400':'img/film/valley-portra400.jpg'};
 function film(photo,look){return FILM[photo+'-'+look]}
 function clamp(x,lo,hi){return x<lo?lo:x>hi?hi:x}
@@ -784,7 +785,7 @@ function hist(d){
     for(var k=0;k<64;k++){var bh=Math.min(1,bins[ci][k]/mx)*(H-14);x.fillRect(k*W/64,H-bh,W/64+1,bh)}});
   x.globalCompositeOperation='source-over'}
 
-/* ---------- full-size detail slider: the PO's photos, PixelSync engine renders (PD-33) ---------- */
+/* ---------- full-size detail slider: the PO's photos, PixelSync engine renders (PD-34) ---------- */
 var XP=[{k:'frost',w:1300,h:867},{k:'valley',w:1300,h:867},{k:'oval',w:867,h:1300},{k:'paris',w:867,h:1300}];
 var xi=0,xlook='portra400',xpos=50;
 function xsize(p){var maxH=Math.min(660,window.innerHeight*0.8),W=document.getElementById('xstage').clientWidth,h=Math.min(maxH,W*p.h/p.w),w=h*p.w/p.h;if(w>W){w=W;h=W*p.h/p.w}return [Math.round(w),Math.round(h)]}
